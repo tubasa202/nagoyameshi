@@ -1,0 +1,529 @@
+ html {
+ 	font-size: 14px;
+ }
+
+ body {
+ 	font-family: 'Noto Sans JP', sans-serif;
+ 	line-height: 1.6;
+ 	/* 行間を適度に設定 */
+ }
+
+ h1 {
+ 	font-size: 1.5rem;
+ 	margin-bottom: 1rem;
+ 	/* タイトルの下の余白を設定 */
+ }
+
+ h3 {
+ 	font-size: 1.25rem;
+ }
+
+ a {
+ 	color: #333;
+ 	text-decoration: none !important;
+ }
+
+ a:hover {
+ 	color: #407784;
+ }
+
+ footer {
+ 	width: 100%;
+ 	height: 60px;
+ 	position: fixed;
+ 	bottom: 0;
+ 	background-color: #f2f0eb;
+ }
+
+ .nagoyameshi-wrapper {
+ 	min-height: 100vh;
+ 	position: relative;
+ 	padding-bottom: 80px;
+ 	box-sizing: border-box;
+ }
+
+ /* テーブルの行間と余白を調整 */
+ .table {
+ 	margin-bottom: 1rem;
+ 	/* テーブルの下の余白を設定 */
+ 	 margin-top: 20px;
+ }
+ .table thead th {
+    background-color: #f8f9fa;
+    border-top: 2px solid #dee2e6;
+}
+
+.table tbody td {
+    vertical-align: middle;
+}
+
+/* 詳細を見るリンクのスタイル */
+.table a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.table a:hover {
+    text-decoration: underline;
+}
+ .table td,
+ .table th {
+ 	padding: 0.5rem;
+ 	/* テーブルセルのパディングを調整 */
+ 	vertical-align: middle;
+ 	/* セルの内容を垂直中央に配置 */
+ 	 min-width: 120px; /* または必要に応じて調整 */
+ 	 
+ }
+ 
+ /* 解除ボタンのスタイル */
+.btn-danger {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+/* モーダルのスタイル */
+.modal-content {
+    border-radius: 0.3rem;
+}
+
+.modal-header {
+    border-bottom: 1px solid #dee2e6;
+}
+
+.modal-footer {
+    border-top: 1px solid #dee2e6;
+}
+
+ /* ページネーションのスタイルを設定 */
+ .pagination {
+ 	margin-top: 1rem;
+ 	/* ページネーションの上の余白を設定 */
+ }
+
+ .nagoyameshi-navbar {
+ 	min-height: 60px;
+ }
+
+ .nagoyameshi-logo {
+ 	height: 30px;
+ }
+
+ .nagoyameshi-btn {
+ 	background-color: #f0908d !important;
+ 	transition: 0.1s;
+ }
+
+ .nagoyameshi-btn:hover {
+ 	opacity: 0.8;
+ }
+
+ .nagoyameshi-page-link {
+ 	color: #f0908d;
+ }
+
+ .nagoyameshi-page-link:hover {
+ 	color: #f0908d;
+ }
+
+ .nagoyameshi-active {
+ 	background-color: #f0908d !important;
+ 	border-color: #f0908d !important;
+ }
+
+ .nagoyameshi-pre-wrap {
+ 	/* 改行文字で行を折り返す */
+ 	white-space: pre-wrap;
+ }
+
+ .nagoyameshi-link-danger {
+ 	color: #f6ad49;
+ }
+
+ .restaurant-btn-color {
+ 	color: #f0908d;
+ }
+
+ .nagoyameshi-link-danger:hover {
+ 	color: #f0908d;
+ }
+
+ .nagoyameshi-btn-danger {
+ 	background-color: #f6ad49 !important;
+ 	transition: 0.1s;
+ }
+
+ .nagoyameshi-btn-danger:hover {
+ 	opacity: 0.8;
+ }
+
+ .nagoyameshi-dropdown-item:active {
+ 	background-color: #f0908d;
+ }
+
+ .nagoyameshi-card-link {
+ 	transition: 0.3s;
+ }
+
+ .nagoyameshi-card-link:hover {
+ 	opacity: 0.7;
+ }
+
+ .nagoyameshi-horizontal-card-image {
+ 	width: 100%;
+ 	height: 240px;
+ 	object-fit: cover;
+ }
+
+ /* ボタンのスタイルを変更 */
+ .btn-primary {
+ 	background-color: #f0908d;
+ 	border-color: #f0908d;
+ }
+
+ .btn-primary:hover {
+ 	background-color: #f75d59;
+ 	border-color: #f75d59;
+ }
+
+ /* 店舗情報のセクション */
+ .information-sections>div {
+ 	padding-bottom: 0.5rem;
+ 	margin-bottom: 0.5rem;
+ 	border-bottom: 1px solid #ccc;
+ }
+
+ .information-sections>div:last-child {
+ 	border-bottom: none;
+ }
+
+ /* ナビゲーションリンクのテキスト色をピンクに */
+ .nav-link {
+ 	color: #f0908d;
+ 	/* ピンクの色 */
+ }
+
+ /* アクティブなナビゲーションリンクのテキスト色 */
+ .nav-link.active {
+ 	color: #f0908d;
+ 	background-color: #ffe5e0;
+ 	/* ピンクの薄い背景色 */
+ }
+
+ /* ナビゲーションリンクのホバー時のテキスト色 */
+ .nav-link:hover {
+ 	color: #f0908d;
+ 	background-color: #ffe5e0;
+ 	/* ピンクの薄い背景色 */
+ }
+
+ /* カテゴリ一覧のタイトル */
+ .category-title {
+ 	margin-bottom: 20px;
+ 	text-align: center;
+ 	/* タイトルの下の余白 */
+ }
+
+ /* カテゴリコンテナ */
+ .category-container {
+ 	display: flex;
+ 	flex-wrap: wrap;
+ 	gap: 20px;
+ 	/* 各カテゴリ間の間隔 */
+ 	justify-content: start;
+ 	margin-bottom: 30px;
+ 	/* 下の余白 */
+ }
+
+
+ /* 画像があるカテゴリアイテム */
+ .category-item {
+ 	flex-basis: calc(20% - 20px);
+ 	/* 5つ表示する場合の基本幅（間隔を考慮） */
+ 	text-align: center;
+ 	display: inline-block;
+ 	/* 横に並べる */
+ 	position: relative;
+ 	width: 100px;
+ 	/* スクリーンショットに合わせてカテゴリ画像の幅を調整 */
+ 	border: 1px solid #ddd;
+ 	/* 枠線を追加 */
+ 	box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+ 	/* 影を追加 */
+ 	border-radius: 4px;
+ 	/* 角を丸くする */
+ 	overflow: hidden;
+ 	/* はみ出した画像を隠す */
+ }
+
+ /* 画像がないカテゴリアイテム */
+ .category-item-no-image {
+ 	display: block;
+ 	/* 各要素をブロックレベルで表示 */
+ 	background-color: #f7f7f7;
+ 	/* 背景色 */
+ 	color: #333;
+ 	/* テキスト色 */
+ 	text-align: center;
+ 	/* テキストを中央揃え */
+ 	padding: 10px 20px;
+ 	/* 上下左右のパディング */
+ 	margin-bottom: 10px;
+ 	/* 下のマージン */
+ 	border-radius: 5px;
+ 	/* 角の丸み */
+ 	border: 1px solid #ddd;
+ 	/* 枠線 */
+ 	cursor: pointer;
+ 	/* ホバー時のカーソルを指に */
+ 	transition: background-color 0.3s;
+ 	/* 背景色の変化を滑らかに */
+ 	text-decoration: none;
+ 	/* テキストの下線を消す */
+ 	flex-basis: 100%;
+ 	/* 幅いっぱいに展開 */
+ }
+
+ .category-list {
+ 	list-style-type: none;
+ 	/* リストマーカーを非表示 */
+ 	padding-left: 0;
+ 	/* リストの左パディングを削除 */
+ }
+
+ .category-list li {
+ 	display: inline-block;
+ 	/* リストアイテムを横並びに */
+ 	margin-right: 10px;
+ 	/* アイテム間の余白 */
+ }
+
+ .category-list li a {
+ 	display: block;
+ 	padding: 5px 10px;
+ 	/* リンクのパディング */
+ 	background-color: #f2f2f2;
+ 	/* 背景色 */
+ 	border-radius: 5px;
+ 	/* 角の丸み */
+ 	color: #333;
+ 	/* テキスト色 */
+ 	transition: background-color 0.3s;
+ 	/* 背景色の変化を滑らかに */
+ }
+
+ .category-list li a:hover {
+ 	background-color: #ddd;
+ 	/* ホバー時の背景色 */
+ }
+
+ .category-image {
+ 	width: 100%;
+ 	height: auto;
+ 	/* 画像の高さを自動調整 */
+ }
+
+ .category-image img {
+ 	width: 100%;
+ 	height: 100%;
+ 	object-fit: cover;
+ 	/* 画像をアスペクト比を保持してフィットさせる */
+ }
+
+ .image-container {
+ 	width: 100%;
+ 	/* コンテナの幅を100%に設定 */
+ 	height: auto;
+ 	/* コンテナの高さを自動調整に変更 */
+ 	position: relative;
+ 	/* 位置を相対的に設定 */
+ 	overflow: hidden;
+ 	/* はみ出した部分を隠す */
+ 	border-radius: 4px;
+ 	/* 角を丸める */
+ 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+ 	/* 影をつける */
+ }
+
+ .image-container img {
+ 	width: 100%;
+ 	/* 画像の幅をコンテナに合わせる */
+ 	height: 100%;
+ 	/* 画像の高さをコンテナに合わせる */
+ 	object-fit: cover;
+ 	/* 画像をアスペクト比を保持しながら埋める */
+ 	transition: transform 0.3s ease;
+ 	/* トランジション効果を追加 */
+ 	object-fit: cover;
+ 	object-position: center;
+ 	/* 画像をコンテナの中心に合わせる */
+ }
+
+ .image-container:hover img {
+ 	transform: scale(1.05);
+ 	/* ホバー時に画像を拡大 */
+ }
+
+ /* カテゴリ名のオーバーレイスタイル */
+ .category-name-overlay {
+ 	position: absolute;
+ 	bottom: 0;
+ 	left: 0;
+ 	width: 100%;
+ 	color: #fff;
+ 	text-align: center;
+ 	background-color: rgba(0, 0, 0, 0.5);
+ 	padding: 5px 0;
+ }
+
+ .category-item:hover .category-name-overlay {
+ 	background-color: rgba(0, 0, 0, 0.8);
+ 	/* ホバー時の背景色を変更 */
+ }
+
+ .category-item-no-image:hover {
+ 	background-color: #e7e7e7;
+ 	/* ホバー時の背景色 */
+ }
+
+ .dashboard {
+ 	background-color: #f9f9f9;
+ 	padding: 20px;
+ 	border-radius: 8px;
+ 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+ 	margin-bottom: 30px;
+ }
+
+ .dashboard-title {
+ 	color: #333;
+ 	margin-bottom: 20px;
+
+ }
+
+ .dashboard-stats {
+ 	display: grid;
+ 	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+ 	gap: 15px;
+ }
+
+ .stat-item {
+ 	background-color: #ffffff;
+ 	padding: 15px;
+ 	border-radius: 6px;
+ 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+ 	text-align: center;
+ }
+
+ .stat-item h3 {
+ 	color: #555;
+ 	margin-bottom: 10px;
+ }
+
+ .stat-item p {
+ 	font-size: 1.2em;
+ 	color: #333;
+ 	margin-bottom: 0;
+ }
+
+ /* カードのホバーエフェクト */
+ .stat-item:hover {
+ 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+ 	transform: translateY(-5px);
+ 	transition: all 0.3s ease;
+ }
+
+/* レビュー項目のスタイルを設定 */
+.review-item {
+    border: 1px solid #ddd; /* 枠線 */
+    padding: 1rem; /* 内側の余白 */
+    margin-bottom: 1rem; /* 下の余白 */
+    border-radius: 4px; /* 角の丸み */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* 影 */
+}
+
+/* レビューのタイトルスタイル */
+.review-item h4 {
+    color: #333; /* テキスト色 */
+    margin-bottom: 0.5rem; /* 下の余白 */
+}
+
+/* レビューの評価スタイル */
+.review-item p {
+    margin-bottom: 0.5rem; /* 下の余白 */
+}
+
+/* ボタンのスタイル */
+.review-item .btn-secondary {
+    margin-right: 0.5rem; /* 右の余白 */
+}
+
+/* 星のスタイル */
+.review-item span {
+    font-size: 1rem; /* 星のサイズ */
+    margin-right: 0.1rem; /* 星の間の余白 */
+}
+
+/* レビューの内容スタイル */
+.review-item .review-content {
+    font-size: 0.9rem; /* テキストのサイズ */
+    color: #555; /* テキストの色 */
+    line-height: 1.4; /* 行の高さ */
+}
+
+.reviews-border {
+    
+	 border-top: 1px solid rgb(117, 117, 117); /* グレイ */
+}
+
+.form-group {
+    text-align: center; /* テキストを中央揃えに */
+    margin-top: 2rem; /* 上の余白を設定 */
+    margin-bottom: 1rem; /* 下の余白を設定 */
+}
+
+.review-edit{
+	margin-bottom: 1rem;
+}
+
+.btn {
+	  margin: 0.5rem; /* ボタンの余白を設定 */
+}
+
+
+ @media screen and (min-width: 1400px) {
+ 	.nagoyameshi-container {
+ 		max-width: 1200px;
+ 	}
+ }
+
+ /* レスポンシブ対応 */
+ @media (max-width: 768px) {
+ 	.dashboard-stats {
+ 		grid-template-columns: 1fr;
+ 	}
+
+ 	.breadcrumb {
+ 		font-size: 0.9rem;
+ 	}
+
+ 	.nav-tabs {
+ 		font-size: 0.9rem;
+ 	}
+
+ 	.btn {
+ 		font-size: 0.8rem;
+ 	}
+ 	 .container {
+        padding: 0 15px;
+    }
+
+    .breadcrumb-item + .breadcrumb-item::before {
+        content: ">";
+    }
+ }

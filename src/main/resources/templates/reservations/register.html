@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<div th:replace="~{fragment :: meta}"></div>
+	<div th:replace="~{fragment :: styles}"></div>
+	<title>予約フォーム</title>
+</head>
+
+<body>
+	<div class="nagoyameshi-wrapper">
+		<!-- ヘッダー -->
+		<div th:replace="~{fragment :: header}"></div>
+
+		<main>
+			<div class="container pt-4 pb-5 nagoyameshi-container">
+				<div class="row justify-content-center">
+					<div class="col-xl-5 col-lg-6 col-md-8">
+						<nav class="mb-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+							<ol class="breadcrumb mb-0">
+								<li class="breadcrumb-item"><a th:href="@{/index}">ホーム</a></li>
+								<li class="breadcrumb-item"><a th:href="@{/restaurants}">店舗一覧</a></li>
+								<li class="breadcrumb-item active" aria-current="page">予約フォーム</li>
+							</ol>
+						</nav>
+
+						<h1 class="mb-4 text-center">予約フォーム</h1>
+
+						<div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+							<p th:text="${errorMessage}"></p>
+						</div>
+						
+			
+
+
+						<nav class="nav nav-tabs mb-4">
+							<a class="nav-link " th:href="@{/restaurants/{id}(id=${restaurant.id})}">トップ</a>
+							<a class="nav-link active"
+								th:href="@{/restaurants/{id}/reservations/register(id=${restaurant.id})}">予約</a>
+							<a class="nav-link" th:href="@{/restaurants/__${restaurant.getId()}__/reviews}">レビュー</a>
+
+
+						</nav>
+
+						<!-- 予約フォーム -->
+						<form th:action="@{/restaurants/__${restaurant.getId()}__/reservations/create}"
+							th:object="${reservationForm}" method="post">
+							<input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+
+							<!-- 予約日 -->
+							<div class="mb-3">
+								<label for="reservationDate" class="form-label">予約日:</label>
+								<input type="date" id="reservationDate" name="reservationDate" required
+									class="form-control">
+							</div>
+
+							<!-- 予約時間 -->
+							<div class="mb-3">
+								<label for="reservationTime" class="form-label">予約時間:</label>
+								<select id="reservationTime" name="reservationTime" required class="form-control">
+									<option th:each="time : ${availableTimes}" th:value="${time}" th:text="${time}">
+									</option>
+								</select>
+							</div>
+
+							<!-- 人数 -->
+							<div class="mb-3">
+								<label for="numberOfPeople" class="form-label">人数:</label>
+								<select id="numberOfPeople" name="numberOfPeople" required class="form-control">
+									<option value="" disabled selected>選択してください</option>
+									<option th:each="num : ${availablePeopleOptions}" th:value="${num}"
+										th:text="${num}"></option>
+								</select>
+							</div>
+
+							<div class="text-center">
+								<button type="submit" class="btn btn-primary">予約する</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<div th:replace="~{fragment :: footer}"></div>
+	</div>
+
+	<div th:replace="~{fragment :: scripts}"></div>
+</body>
+
+</html>

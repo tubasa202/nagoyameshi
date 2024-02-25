@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<div th:replace="~{fragment :: meta}"></div>
+
+	<div th:replace="~{fragment :: styles}"></div>
+
+	<title>NAGOYAMESHI</title>
+</head>
+
+<body>
+	<div class="naogyameshi-wrapper">
+		<!-- ヘッダ- -->
+		<div th:replace="~{fragment :: header}"></div>
+
+		<main>
+			<div class="container pt-4 pb-5 nagoyameshi-container">
+				<div class="row">
+					<!-- 検索フォームの列 -->
+					<div class="col-md-3">
+						<!-- ログイン・ログアウトメッセージ -->
+						<div th:if="${param.loggedIn}" class="alert alert-info">ログインしました。</div>
+						<div th:if="${param.loggedOut}" class="alert alert-info">ログアウトしました。</div>
+						<div th:if="${successMessage}" class="alert alert-info">
+							<span th:text="${successMessage}"></span>
+						</div>
+
+						<form method="get" th:action="@{/restaurants}" class="mb-3 ngaoyameshi-search-form">
+							<div class="input-group mb-3">
+								<input type="text" class="form-control" name="keyword" th:value="${keyword}"
+									placeholder="店舗名">
+								<button type="submit" class="btn text-white shadow-sm nagoyameshi-btn">検索</button>
+							</div>
+
+							<div class="card mb-3">
+								<div class="card-header">
+									カテゴリから探す
+								</div>
+								<div class="card-body">
+									<form method="get" th:action="@{/restaurants}" class="w-100">
+										<div class="form-group mb-3">
+											<select class="form-control form-select" name="category">
+												<option value="" hidden>選択してください</option>
+												<option value="居酒屋">居酒屋</option>
+												<option value="焼肉">焼肉</option>
+												<option value="寿司">寿司</option>
+												<option value="定食">定食</option>
+												<option value="カレー">カレー</option>
+												<option value="喫茶店">喫茶店</option>
+												<option value="中華料理">中華料理</option>
+												<option value="イタリア料理">イタリア料理</option>
+												<option value="フランス料理">フランス料理</option>
+												<option value="スペイン料理">スペイン料理</option>
+												<option value="韓国料理">韓国料理</option>
+												<option value="タイ料理">タイ料理</option>
+												<option value="海鮮料理">海鮮料理</option>
+												<option value="ステーキ">ステーキ</option>
+												<option value="ハンバーグ">ハンバーグ</option>
+												<option value="ハンバーガー">ハンバーガー</option>
+												<option value="そば">そば</option>
+												<option value="お好み焼き">お好み焼き</option>
+												<option value="たこ焼き">たこ焼き</option>
+												<option value="鍋料理">鍋料理</option>
+												<option value="バー">バー</option>
+												<option value="パン">パン</option>
+												<option value="スイーツ">スイーツ</option>
+												<option value="焼き鳥">焼き鳥</option>
+												<option value="すき焼き">すき焼き</option>
+												<option value="しゃぶしゃぶ">しゃぶしゃぶ</option>
+												<option value="天ぷら">天ぷら</option>
+												<option value="鉄板焼き">鉄板焼き</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<button type="submit"
+												class="btn text-white shadow-sm w-100 nagoyameshi-btn">検索</button>
+										</div>
+									</form>
+								</div>
+							</div>
+
+							<div class="card mb-3">
+								<div class="card-header">
+									エリアから探す
+								</div>
+								<div class="card-body">
+									<form method="get" th:action="@{/restaurants}" class="w-100">
+										<div class="form-group mb-3">
+											<select class="form-control form-select" name="area">
+												<option value="" hidden>選択してください</option>
+												<!-- 名古屋市の地区 -->
+												<optgroup label="中区">
+													<option value="栄">栄</option>
+													<option value="新栄町">新栄町</option>
+													<option value="大須">大須</option>
+													<option value="丸の内">丸の内</option>
+												</optgroup>
+												<optgroup label="千種区">
+													<option value="池下">池下</option>
+													<option value="星が丘">星が丘</option>
+													<option value="千種">千種</option>
+												</optgroup>
+												<optgroup label="北区">
+													<option value="名城">名城</option>
+													<option value="黒川">黒川</option>
+													<option value="平安">平安</option>
+												</optgroup>
+												<optgroup label="西区">
+													<option value="名西">名西</option>
+													<option value="庄内緑地">庄内緑地</option>
+													<option value="城西">城西</option>
+												</optgroup>
+												<optgroup label="東区">
+													<option value="車道">車道</option>
+													<option value="東桜">東桜</option>
+													<option value="白壁">白壁</option>
+												</optgroup>
+												<optgroup label="南区">
+													<option value="戸田">戸田</option>
+													<option value="昭和橋">昭和橋</option>
+													<option value="笠寺">笠寺</option>
+												</optgroup>
+												<optgroup label="港区">
+													<option value="名古屋港">名古屋港</option>
+													<option value="稲永">稲永</option>
+													<option value="港明">港明</option>
+												</optgroup>
+												<optgroup label="緑区">
+													<option value="徳重">徳重</option>
+													<option value="鳴海">鳴海</option>
+													<option value="大高">大高</option>
+												</optgroup>
+												<optgroup label="名東区">
+													<option value="藤が丘">藤が丘</option>
+													<option value="一社">一社</option>
+													<option value="上社">上社</option>
+												</optgroup>
+												<optgroup label="守山区">
+													<option value="小幡緑地">小幡緑地</option>
+													<option value="守山">守山</option>
+													<option value="大森・金城学院">大森・金城学院</option>
+												</optgroup>
+												<optgroup label="瑞穂区">
+													<option value="瑞穂公園">瑞穂公園</option>
+													<option value="山崎川">山崎川</option>
+													<option value="瑞穂運動場">瑞穂運動場</option>
+												</optgroup>
+												<optgroup label="天白区">
+													<option value="平針">平針</option>
+													<option value="塩釜口">塩釜口</option>
+													<option value="植田">植田</option>
+												</optgroup>
+												<optgroup label="中村区">
+													<option value="名古屋駅">名古屋駅</option>
+													<option value="名駅">名駅</option>
+													<option value="中村公園">中村公園</option>
+												</optgroup>
+												<optgroup label="中川区">
+													<option value="昭和町">昭和町</option>
+													<option value="尾頭橋">尾頭橋</option>
+													<option value="中川運河">中川運河</option>
+												</optgroup>
+												<optgroup label="昭和区">
+													<option value="御器所">御器所</option>
+													<option value="八事">八事</option>
+													<option value="向山">向山</option>
+												</optgroup>
+												<optgroup label="熱田区">
+													<option value="熱田神宮">熱田神宮</option>
+													<option value="金山">金山</option>
+													<option value="西高蔵">西高蔵</option>
+												</optgroup>
+											</select>
+										</div>
+										<div class="form-group">
+											<button type="submit"
+												class="btn text-white shadow-sm w-100 nagoyameshi-btn">検索</button>
+										</div>
+									</form>
+								</div>
+							</div>
+
+							<div class="card mb-3">
+								<div class="card-header">
+									予算
+								</div>
+								<div class="card-body">
+									<form method="get" th:action="@{/restaurants}" class="w-100">
+										<div class="form-group mb-3">
+											<select class="form-control form-select" name="price">
+												<option value="" hidden>選択してください</option>
+												<option value="1000" th:selected="${price == 1000}">1,000円以内</option>
+												<option value="2000" th:selected="${price == 2000}">2,000円以内</option>
+												<option value="3000" th:selected="${price == 3000}">3,000円以内</option>
+												<option value="4000" th:selected="${price == 4000}">4,000円以内</option>
+												<option value="5000" th:selected="${price == 5000}">5,000円以内</option>
+												<option value="6000" th:selected="${price == 6000}">6,000円以内</option>
+												<option value="7000" th:selected="${price == 7000}">7,000円以内</option>
+												<option value="8000" th:selected="${price == 8000}">8,000円以内</option>
+												<option value="9000" th:selected="${price == 9000}">9,000円以内</option>
+												<option value="10000" th:selected="${price == 10000}">10,000円以内</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<button type="submit"
+												class="btn text-white shadow-sm w-100 nagoyameshi-btn">検索</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</form>
+					</div>
+
+
+					<div class="col-md-8">
+						<form method="get" th:action="@{/restaurants}" class="mb-5 ngaoyameshi-search-form">
+
+							<!-- カテゴリ一覧 -->
+							<h2 class="text-center">カテゴリ一覧</h2>
+							<div class="category-container">
+								<div th:each="category, iterStat : ${topCategories}" class="category-item">
+									<a th:href="@{/restaurants(category=${category.name})}">
+										<div class="image-container">
+											<img th:src="@{'/categorystorage/' + ${category.imageName}}" alt="カテゴリ画像" />
+											<div class="category-name-overlay">
+												<h3 th:text="${category.name}">カテゴリ名</h3>
+											</div>
+										</div>
+									</a>
+								</div>
+								<!-- 画像なしカテゴリ -->
+								<div class="category-item-no-image">
+									<h4>その他のカテゴリ</h4>
+									<ul class="category-list">
+										<li th:each="category, iterStat : ${otherCategories}"
+											th:if="${iterStat.count > 5}">
+											<a th:href="@{/restaurants(category=${category.name})}"
+												th:text="${category.name}">カテゴリ名</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<!--								<div th:each="category, iterStat : ${otherCategories}" class="category-item-no-image">-->
+							<!--									<a th:href="@{/restaurants(category=${category.name})}"-->
+							<!--										th:text="${category.name}">カテゴリ名</a>-->
+							<!--								</div>-->
+							<!--							</div>-->
+
+
+
+							<!-- おすすめのレストラン -->
+							<h2 class="text-center mb-3">おすすめのレストラン</h2>
+							<div class="row row-cols-lg-5 row-cols-2 g-3 mb-5">
+								<div class="col" th:each="newrestaurant : ${newRestaurants}">
+									<a th:href="@{/restaurants/__${newrestaurant.getId()}__}"
+										class="link-dark nagoyameshi-card-link">
+										<div class="card h-100">
+											<div class="image-container">
+												<img th:if="${newrestaurant.getImage()}"
+													th:src="@{/storage/__${newrestaurant.getImage()}__}" alt="レストラン画像">
+											</div>
+											<div class="card-body">
+												<h3 class="card-title" th:text="${newrestaurant.getName()}"></h3>
+												<p class="card-text mb-1">
+													<small class="text-muted"
+														th:text="${newrestaurant.getAddress()}"></small>
+												</p>
+												<p class="card-text">
+													<span
+														th:text="${#numbers.formatInteger(newrestaurant.getLowestPrice(), 1, 'COMMA')} + '円～' + ${#numbers.formatInteger(newrestaurant.getHighestPrice(), 1, 'COMMA')} + '円'"></span>
+												</p>
+											</div>
+										</div>
+									</a>
+								</div>
+							</div>
+							<h2 class="text-center mb-3">人気のレストラン</h2>
+							<div class="row row-cols-lg-5 row-cols-2 g-3 mb-5">
+								<div class="col" th:each="topRatedRestaurant : ${topRatedRestaurants}">
+									<a th:href="@{/restaurants/__${topRatedRestaurant.getId()}__}"
+										class="link-dark nagoyameshi-card-link">
+										<div class="card h-100">
+											<div class="image-container">
+												<img th:if="${topRatedRestaurant.getImage()}"
+													th:src="@{/storage/__${topRatedRestaurant.getImage()}__}"
+													alt="レストラン画像">
+												<img th:unless="${topRatedRestaurant.getImage()}"
+													th:src="@{/images/noImage.png}" alt="NO IMAGE" />
+											</div>
+											<div class="card-body">
+												<h3 class="card-title" th:text="${topRatedRestaurant.getName()}"></h3>
+												<p class="card-text mb-1">
+													<small class="text-muted"
+														th:text="${topRatedRestaurant.getAddress()}"></small>
+												</p>
+												<p class="card-text">
+													<span
+														th:text="${#numbers.formatInteger(topRatedRestaurant.getLowestPrice(), 1, 'COMMA')} + '円～' + ${#numbers.formatInteger(topRatedRestaurant.getHighestPrice(), 1, 'COMMA')} + '円'"></span>
+												</p>
+											</div>
+										</div>
+									</a>
+								</div>
+							</div>
+						</form>
+					</div>
+
+		</main>
+
+		<!-- フッター  -->
+		<div th:replace="~{fragment :: footer}"></div>
+	</div>
+
+	<div th:replace="~{fragment :: scripts}"></div>
+</body>
+
+</html>

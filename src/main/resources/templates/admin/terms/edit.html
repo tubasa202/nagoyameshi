@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<div th:replace="~{fragment :: meta}"></div>
+	<div th:replace="~{fragment :: styles}"></div>
+	<title>会社情報の編集</title>
+</head>
+
+<body>
+	<div class="nagoyameshi-wrapper">
+		<!-- ヘッダー -->
+		<div th:replace="~{fragment :: header}"></div>
+
+		<main>
+			<div class="container pt-4 pb-5 nagoyameshi-container">
+				<div class="row justify-content-center">
+					<div class="col-xl-6 col-lg-7 col-md-8">
+
+						<nav class="mb-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+							<ol class="breadcrumb mb-0">
+								<li class="breadcrumb-item"><a th:href="@{/admin/index}">ホーム</a></li>
+								<li class="breadcrumb-item"><a th:href="@{/admin/terms}">利用規約</a></li>
+								<li class="breadcrumb-item active" aria-current="page">利用規約の編集</li>
+							</ol>
+						</nav>
+						<h1 class="mb-4 text-center">利用規約の編集</h1>
+						<form th:action="@{/admin/terms/__${termEditForm.id}__/update}"
+							th:object="${termEditForm}" method="post" enctype="multipart/form-data">
+							<input type="hidden" th:field="*{id}">
+
+							<div class="form-group row mb-3">
+								<div class="col-md-4">
+									<label for="content" class="col-form-label text-md-left fw-bold">利用規約</label>
+								</div>
+								<div class="col-md-8">
+									<div th:if="${#fields.hasErrors('content')}" class="text-danger small mb-2"
+										th:errors="*{content}"></div>
+									<input type="text" class="form-control" th:field="*{content}" autofocus>
+								</div>
+							</div>
+
+							<div class="form-group d-flex justify-content-center my-4">
+								<button type="submit" class="btn text-white shadow-sm w-50 nagoyameshi-btn">更新</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<!-- フッター -->
+		<div th:replace="~{fragment :: footer}"></div>
+	</div>
+
+	<div th:replace="~{fragment :: scripts}"></div>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<div th:replace="~{fragment :: meta}"></div>
+	<div th:replace="~{fragment :: styles}"></div>
+	<title>予約一覧</title>
+</head>
+
+<body>
+	<div class="nagoyameshi-wrapper">
+		<!-- ヘッダー -->
+		<div th:replace="~{fragment :: header}"></div>
+
+		<main>
+			<div class="container pt-4 pb-5 nagoyameshi-container">
+				<div class="row justify-content-center">
+					<div class="col-xl-5 col-lg-6 col-md-8">
+						<!-- パンくずリストなどのナビゲーション -->
+
+						<h2 class="text-center">予約一覧</h2>
+						<div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+							<p th:text="${errorMessage}"></p>
+						</div>
+
+						<table class="table">
+							<thead>
+								<tr>
+									<th>店舗名</th>
+									<th>予約日</th>
+									<th>予約時間</th>
+									<th>人数</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="reservation : ${reservations}">
+									<td th:text="${reservation.restaurant.name}">店舗名</td>
+									<td th:text="${#temporals.format(reservation.reservedDatetime, 'yyyy-MM-dd')}">予約日
+									</td>
+									<td th:text="${#temporals.format(reservation.reservedDatetime, 'HH:mm')}">予約時間</td>
+									<td th:text="${reservation.numberOfPeople}">人数</td>
+									<td>
+										<form th:action="@{/reservations/__${reservation.getId()}__/delete}"
+											method="post">
+											<input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+											<button type="submit" class="btn btn-danger"
+												th:data-reservation-id="${reservation.id}" data-toggle="modal"
+												data-target="#deleteConfirmationModal"
+												th:if="${reservation.reservedDatetime.isAfter(T(java.time.LocalDateTime).now())}">キャンセル</button>
+										</form>
+									</td>
+								</tr>
+								<!-- 削除確認モーダル -->
+								<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog"
+									aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+									<div class="modal-dialog" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title" id="deleteConfirmationModalLabel">予約キャンセルの確認
+												</h5>
+												<button type="button" class="close" data-dismiss="modal"
+													aria-label="Close">
+													<span aria-hidden="true">&times;</span>
+												</button>
+											</div>
+											<div class="modal-body">
+												この予約をキャンセルしてもよろしいですか？
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary"
+													data-dismiss="modal">閉じる</button>
+												<form id="deleteForm" method="post">
+													<input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+													<button type="button" class="btn btn-danger" data-bs-toggle="modal"
+														data-bs-target="#deleteConfirmationModal{{reservation.id}}">
+														キャンセル
+													</button>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<div th:replace="~{fragment :: footer}"></div>
+	</div>
+
+	<script th:inline="javascript">
+		$('#deleteConfirmationModal').on('show.bs.modal', function (event) {
+			var button = $(event.relatedTarget); // モーダルをトリガーしたボタン
+			var reservationId = button.data('reservation-id'); // データ属性から予約IDを取得
+			var actionUrl = /*[[ @{/reservations/}]]*/'reservations/' + reservationId + '/delete'; // フォームのアクションURLを設定
+			var form = $(this).find('#deleteForm');
+			form.attr('action', actionUrl); // フォームにアクションURLを設定
+		});
+	</script>
+
+
+	<div th:replace="~{fragment :: scripts}"></div>
+</body>
+
+</html>
