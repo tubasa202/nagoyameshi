@@ -34,6 +34,11 @@
  	bottom: 0;
  	background-color: #f2f0eb;
  }
+ 
+ .form-control {
+	   height: 35px; /* 高さの調整 */
+
+ }
 
  .nagoyameshi-wrapper {
  	min-height: 100vh;
@@ -58,10 +63,7 @@
 }
 
 /* 詳細を見るリンクのスタイル */
-.table a {
-    text-decoration: none;
-    color: #007bff;
-}
+
 
 .table a:hover {
     text-decoration: underline;
@@ -118,6 +120,13 @@
  .nagoyameshi-btn {
  	background-color: #f0908d !important;
  	transition: 0.1s;
+ 	  transform: translateX(-10px); /* 左に10pxずらす */
+ 	
+ }
+ .nagoyameshi-btn1 {
+	 	background-color: #f0908d !important;
+ 	transition: 0.1s;
+ 	 transform: translateY(-6px); /* 左に10pxずらす */
  }
 
  .nagoyameshi-btn:hover {
@@ -336,34 +345,21 @@
  	/* 画像をアスペクト比を保持してフィットさせる */
  }
 
- .image-container {
- 	width: 100%;
- 	/* コンテナの幅を100%に設定 */
- 	height: auto;
- 	/* コンテナの高さを自動調整に変更 */
- 	position: relative;
- 	/* 位置を相対的に設定 */
- 	overflow: hidden;
- 	/* はみ出した部分を隠す */
- 	border-radius: 4px;
- 	/* 角を丸める */
- 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
- 	/* 影をつける */
- }
+.image-container {
+  width: 100%; /* コンテナの幅を指定 */
+  height: 0; /* 高さを0に設定し、padding-topで高さを調整 */
+  padding-top: 56.25%; /* 16:9のアスペクト比 (例: 9 / 16 * 100 = 56.25%) */
+  position: relative; /* 子要素のimgを絶対配置するための基準点 */
+}
 
- .image-container img {
- 	width: 100%;
- 	/* 画像の幅をコンテナに合わせる */
- 	height: 100%;
- 	/* 画像の高さをコンテナに合わせる */
- 	object-fit: cover;
- 	/* 画像をアスペクト比を保持しながら埋める */
- 	transition: transform 0.3s ease;
- 	/* トランジション効果を追加 */
- 	object-fit: cover;
- 	object-position: center;
- 	/* 画像をコンテナの中心に合わせる */
- }
+.image-container img {
+  position: absolute; /* 親要素に対して絶対位置で配置 */
+  top: 0;
+  left: 0;
+  width: 100%; /* 画像をコンテナの幅いっぱいに広げる */
+  height: 100%; /* 画像をコンテナの高さいっぱいに広げる */
+  object-fit: cover; /* 画像のアスペクト比を保ちつつ、コンテナを完全に埋める */
+}
 
  .image-container:hover img {
  	transform: scale(1.05);
@@ -483,8 +479,7 @@
 
 .form-group {
     text-align: center; /* テキストを中央揃えに */
-    margin-top: 2rem; /* 上の余白を設定 */
-    margin-bottom: 1rem; /* 下の余白を設定 */
+ 
 }
 
 .review-edit{
@@ -493,6 +488,26 @@
 
 .btn {
 	  margin: 0.5rem; /* ボタンの余白を設定 */
+}
+
+/* クレジットカード番号入力フォーム */
+.nagoyameshi-card-holder-name,
+.nagoyameshi-card-element {
+  border-radius: .375rem;
+  padding: 12px;
+  border: 1px solid #ced4da;
+  height: 44px;
+  width: 100%;
+  background: white;
+}
+
+.nagoyameshi-card-holder-name {
+  font-family: sans-serif;
+  outline: none;
+}
+
+.nagoyameshi-card-error {
+  display: none;
 }
 
 

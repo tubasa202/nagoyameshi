@@ -15,6 +15,8 @@ import com.example.nagoyameshi.service.UserService;
 @Controller
 @RequestMapping("/restaurants")
 public class FavoriteRestaurantController {
+	
+	
 
 	private final FavoriteService favoriteService;
     private final UserService userService;

@@ -62,6 +62,9 @@ public class Nagoyameshiuser {
     @Column(name = "enabled")
     private Boolean enabled;
     
+    @Column(name = "stripe_customer_id")
+    private String stripeCustomerId;
+    
     @Column(name = "created_at", insertable = false, updatable = false)
     private Timestamp createdAt;
     

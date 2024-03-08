@@ -36,7 +36,7 @@
 								<div class="input-group">
 									<input type="text" class="form-control" name="keyword" th:value="${keyword}"
 										placeholder="店舗名">
-									<button type="submit" class="btn text-white shadow-sm nagoyameshi-btn">検索</button>
+									<button type="submit" class="btn text-white shadow-sm nagoyameshi-btn1">検索</button>
 								</div>
 							</form>
 
@@ -219,32 +219,36 @@
 							</div>
 						</div>
 						<div class="col-xl-9 col-lg-8 col-md-12">
-							
 
-<!-- カテゴリ一覧 -->
-<h2 class="category-title">カテゴリ一覧</h2>
-<div class="category-container">
-    <!-- 画像付きカテゴリ -->
-    <div th:each="category, iterStat : ${topCategories}" th:if="${iterStat.count <= 5}" class="category-item">
-        <a th:href="@{/restaurants(category=${category.name})}">
-            <div class="image-container">
-                <img th:src="@{'/categorystorage/' + ${category.imageName}}" alt="カテゴリ画像" class="category-image" />
-                <div class="category-name-overlay">
-                    <h3 th:text="${category.name}">カテゴリ名</h3>
-                </div>
-            </div>
-        </a>
-    </div>
-    <!-- 画像なしカテゴリ -->
-    <div class="category-item-no-image">
-        <h4>その他のカテゴリ</h4>
-        <ul class="category-list">
-            <li th:each="category, iterStat : ${otherCategories}" th:if="${iterStat.count > 5}">
-                <a th:href="@{/restaurants(category=${category.name})}" th:text="${category.name}">カテゴリ名</a>
-            </li>
-        </ul>
-    </div>
-</div>
+
+							<!-- カテゴリ一覧 -->
+							<h2 class="category-title">カテゴリ一覧</h2>
+							<div class="category-container">
+								<!-- 画像付きカテゴリ -->
+								<div th:each="category, iterStat : ${topCategories}" th:if="${iterStat.count <= 5}"
+									class="category-item">
+									<a th:href="@{/restaurants(category=${category.name})}">
+										<div class="image-container">
+											<img th:src="@{'/categorystorage/' + ${category.imageName}}" alt="カテゴリ画像"
+												class="category-image" />
+											<div class="category-name-overlay">
+												<h3 th:text="${category.name}">カテゴリ名</h3>
+											</div>
+										</div>
+									</a>
+								</div>
+								<!-- 画像なしカテゴリ -->
+								<div class="category-item-no-image">
+									<h4>その他のカテゴリ</h4>
+									<ul class="category-list">
+										<li th:each="category, iterStat : ${otherCategories}"
+											th:if="${iterStat.count > 5}">
+											<a th:href="@{/restaurants(category=${category.name})}"
+												th:text="${category.name}">カテゴリ名</a>
+										</li>
+									</ul>
+								</div>
+							</div>
 
 
 
@@ -303,39 +307,39 @@
 								</div>
 							</div>
 							<div class="dashboard">
-    <h2 class="dashboard-title">ダッシュボード</h2>
-    <div class="dashboard-stats">
-        <div class="stat-item">
-            <h3>総会員数</h3>
-            <p><span th:text="${totalUsers}">0</span>人</p>
-        </div>
-        <div class="stat-item">
-            <h3>無料会員数</h3>
-            <p><span th:text="${freeMembers}">0</span>人</p>
-        </div>
-        <div class="stat-item">
-            <h3>有料会員数</h3>
-            <p><span th:text="${paidMembers}">0</span>人</p>
-        </div>
-        <div class="stat-item">
-            <h3>店舗数</h3>
-            <p><span th:text="${totalRestaurants}">0</span>件</p>
-        </div>
-        <div class="stat-item">
-            <h3>総予約数</h3>
-            <p><span th:text="${totalReservations}">0</span>件</p>
-        </div>
-        <div class="stat-item">
-            <h3>月間売上</h3>
-            <p><span th:text="${monthlyRevenue}">¥0</span></p>
-        </div>
-        <div class="stat-item">
-            <h3>期間別集計</h3>
-            <p><span th:text="${periodicSummary}">データなし</span></p>
-        </div>
-        <!-- 他の項目も同様に追加 -->
-    </div>
-</div>
+								<h2 class="dashboard-title">ダッシュボード</h2>
+								<div class="dashboard-stats">
+									<div class="stat-item">
+										<h3>総会員数</h3>
+										<p><span th:text="${totalUsers}">0</span>人</p>
+									</div>
+									<div class="stat-item">
+										<h3>無料会員数</h3>
+										<p><span th:text="${totalFreeMembers}">0</span>人</p>
+									</div>
+									<div class="stat-item">
+										<h3>有料会員数</h3>
+										<p><span th:text="${totalPaidMembers}">0</span>人</p>
+									</div>
+									<div class="stat-item">
+										<h3>店舗数</h3>
+										<p><span th:text="${totalRestaurants}">0</span>件</p>
+									</div>
+									<div class="stat-item">
+										<h3>総予約数</h3>
+										<p><span th:text="${totalReservations}">0</span>件</p>
+									</div>
+									<div class="stat-item">
+										<h3>月間売上</h3>
+										<p><span th:text="${#numbers.formatInteger(salesForThisMonth, 1, 'COMMA') + '円'}">¥0</span></p>
+									</div>
+<!--									<div class="stat-item">-->
+<!--										<h3>期間別集計</h3>-->
+<!--										<p><span th:text="${#numbers.formatInteger(salesForThisMonth, 1, 'COMMA') + '円'}">データなし</span></p>-->
+<!--									</div>-->
+									<!-- 他の項目も同様に追加 -->
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

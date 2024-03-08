@@ -16,29 +16,29 @@ public class WebSecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http
-				.authorizeHttpRequests((requests) -> requests
-						.requestMatchers("/css/**", "/images/**", "/js/**", "/storage/**", "/categorystorage/**", "/",
-								"/signup/**", "/restaurants/**", "/forgot-password/**", "/companies/**", "/terms/**","/primes/**")
-						.permitAll() // すべてのユーザーにアクセスを許可するURL           
-						.requestMatchers("/users/{userId}/favorites","/favorites/**","/restaurants/{restaurantid}/reviews/**","/restaurants/{restaurantid}/reservations/**").authenticated()						
-						.requestMatchers("/admin/**", "/categories/**").hasRole("ADMIN") // 管理者にのみアクセスを許可するURL
-						.anyRequest().authenticated() // 上記以外のURLはログインが必要（会員または管理者のどちらでもOK）
-				) 
-				
-//				"/restaurants/{restaurantid}/reviews/**" ログインユーザーのみ
-				.formLogin((form) -> form
-						.loginPage("/login")
-						.loginProcessingUrl("/login")
-						.successHandler(new CustomAuthenticationSuccessHandler()) // カスタム成功ハンドラをセット
-						.failureUrl("/login?error")
-						.permitAll())
-				.logout((logout) -> logout
-						.logoutSuccessUrl("/?loggedOut") // ログアウト時のリダイレクト先URL
-						.permitAll());
+	    http
+	            .authorizeHttpRequests((requests) -> requests
+	                    .requestMatchers("/css/**", "/images/**", "/js/**", "/storage/**", "/categorystorage/**", "/", "/signup/**", "/forgot-password/**","/restaurants/**","/").permitAll()
+	                    .requestMatchers("/users/{userId}/favorites", "/favorites/**", "/restaurants/{restaurantid}/reviews/**", "/restaurants/{restaurantid}/reservations/**", "/subscription/**").hasAnyRole("FREE_MEMBER", "PAID_MEMBER")       
+	                    .requestMatchers("/restaurants/**", "/companies/**", "/terms/**").hasAnyRole("ANONYMOUS", "FREE_MEMBER", "PAID_MEMBER")     
+	                    .requestMatchers("/subscription/register", "/subscription/create").hasRole("FREE_MEMBER") 
+	                    .requestMatchers("/subscription/edit", "/subscription/update", "/subscription/cancel", "/subscription/delete").hasRole("PAID_MEMBER") 
+	                    .requestMatchers("/admin/**", "/categories/**").hasRole("ADMIN")
+	                    .anyRequest().authenticated()
+	            )
+	            .formLogin((form) -> form
+	                    .loginPage("/login")
+	                    .loginProcessingUrl("/login")
+	                    .successHandler(new CustomAuthenticationSuccessHandler())
+	                    .failureUrl("/login?error")
+	                    .permitAll())
+	            .logout((logout) -> logout
+	                    .logoutSuccessUrl("/?loggedOut")
+	                    .permitAll());
 
-		return http.build();
+	    return http.build();
 	}
+
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {

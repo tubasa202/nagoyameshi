@@ -48,10 +48,11 @@ INSERT IGNORE INTO restaurants (id, name, image, description, lowest_price, high
 INSERT IGNORE INTO restaurants (id, name, image, description, lowest_price, highest_price, postal_code, address, phone_number, opening_time,closing_time,category_id,seating_capacity)VALUES(48, 'レストラン48', 'image48.jpg', '中華の伝統味',1000,5000, '460-0008', '名古屋市〇〇区〇〇48-〇〇48', '052-345-0048', '10:00:00', '22:00:00',1,37);
 INSERT IGNORE INTO restaurants (id, name, image, description, lowest_price, highest_price, postal_code, address, phone_number, opening_time,closing_time,category_id,seating_capacity)VALUES(49, 'レストラン49', 'image49.jpg', 'モダンフレンチ',1000,5000, '460-0009', '名古屋市〇〇区〇〇49-〇〇49', '052-345-0049', '10:00:00', '22:00:00',4,38);
 INSERT IGNORE INTO restaurants (id, name, image, description, lowest_price, highest_price, postal_code, address, phone_number, opening_time,closing_time,category_id,seating_capacity)VALUES(50, 'レストラン50', 'image50.jpg', 'バーの上質空間',1000,5000, '460-0000', '名古屋市〇〇区〇〇50-〇〇50', '052-345-0050', '10:00:00', '22:00:00',5,39);
-INSERT IGNORE INTO roles (id, name) VALUES (1, 'ROLE_GENERAL');
-INSERT IGNORE INTO roles (id, name) VALUES (2, 'ROLE_ADMIN');		
+INSERT IGNORE INTO roles (id, name) VALUES (1, 'ROLE_FREE_MEMBER');
+INSERT IGNORE INTO roles (id, name) VALUES (2, 'ROLE_PAID_MEMBER');
+INSERT IGNORE INTO roles (id, name) VALUES (3, 'ROLE_ADMIN');	
 INSERT IGNORE INTO nagoyameshiusers (name, kana, email, email_verified_at, password, role_id, postal_code, address, phone_number, birthday, occupation, remember_token, enabled)VALUES('侍 翼', 'サムライツバサ', 'taro.samurai@example.com', '2024-01-26', '$2a$10$2JNjTwZBwo7fprL2X4sv.OEKqxnVtsVQvuXDkI8xVGix.U3W5B7CO', 1, '1234567', '東京都1-1-1', '123-4567-8901', '1990-01-01', '会社員', 'remember_token_1', true);
-INSERT IGNORE INTO nagoyameshiusers (name, kana, email, email_verified_at, password, role_id, postal_code, address, phone_number, birthday, occupation, remember_token, enabled)VALUES('侍 空', 'サムライクウ', 'ku.samurai@example.com', '2024-01-26', '$2a$10$2JNjTwZBwo7fprL2X4sv.OEKqxnVtsVQvuXDkI8xVGix.U3W5B7CO', 2, '1234567', '東京都1-1-1', '123-4567-8901', '2001-12-01', 'アルバイト', 'remember_token_1', true);
+INSERT IGNORE INTO nagoyameshiusers (name, kana, email, email_verified_at, password, role_id, postal_code, address, phone_number, birthday, occupation, remember_token, enabled)VALUES('侍 空', 'サムライクウ', 'ku.samurai@example.com', '2024-01-26', '$2a$10$2JNjTwZBwo7fprL2X4sv.OEKqxnVtsVQvuXDkI8xVGix.U3W5B7CO', 3, '1234567', '東京都1-1-1', '123-4567-8901', '2001-12-01', 'アルバイト', 'remember_token_1', true);
 INSERT IGNORE INTO categories (id, name, image_name) VALUES (1, '居酒屋', 'izakaya.jpg');
 INSERT IGNORE INTO categories (id, name, image_name) VALUES (2, '焼肉', 'yakiniku.jpg');
 INSERT IGNORE INTO categories (id, name, image_name) VALUES (3, '寿司', 'sushi.jpg');
