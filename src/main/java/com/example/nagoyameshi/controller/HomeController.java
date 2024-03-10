@@ -18,11 +18,11 @@ import com.example.nagoyameshi.service.RestaurantService;
 @Controller
 @RequestMapping("/restaurants")
 
-public class ShopController {
+public class HomeController {
 	  private final RestaurantRepository restaurantRepository;
 	  private final RestaurantService restaurantService;
 
-	    public ShopController(RestaurantRepository restaurantRepository, RestaurantService restaurantService) {
+	    public HomeController(RestaurantRepository restaurantRepository, RestaurantService restaurantService) {
 	        this.restaurantRepository = restaurantRepository;
 			this.restaurantService = restaurantService;
 	    }
