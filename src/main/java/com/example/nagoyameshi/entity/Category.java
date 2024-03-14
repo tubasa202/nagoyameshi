@@ -39,7 +39,4 @@ public class Category {
     // Restaurantエンティティとの関係を追加
     @OneToMany(mappedBy = "category")
     private List<Restaurant> restaurants;
-
-    // Getters and setters
-    // ...
 }

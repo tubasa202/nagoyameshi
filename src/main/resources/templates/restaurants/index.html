@@ -252,7 +252,7 @@
 
 										<div class="col-md-4">
 											<img th:if="${restaurant.getImage()}"
-												th:src="@{/storage/__${restaurant.getImage()}__}"
+												th:src="@{/storage/restaurant/__${restaurant.getImage()}__}"
 												class="card-img-top nagoyameshi-horizontal-card-image" alt="店舗画像">
 											<img th:unless="${restaurant.getImage()}" th:src="@{/images/noImage.png}"
 												class="card-img-top nagoyameshi-horizontal-card-image" alt="NO IMAGE">

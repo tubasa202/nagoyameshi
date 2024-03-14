@@ -21,96 +21,100 @@ import com.stripe.model.Subscription;
 
 @Controller
 @RequestMapping("/subscription")
-public class SubscriptionController {  
-    @Value("${stripe.premium-plan-id}")
-    private String premiumPlanId;
-    
-    private final NagoyameshiuserRepository nagoyameshiuserRepository;
-    private final UserService userService; 
-    private final StripeService stripeService; 
-    
-    public SubscriptionController(NagoyameshiuserRepository nagoyameshiuserRepository, UserService userService, StripeService stripeService) {   
-        this.nagoyameshiuserRepository = nagoyameshiuserRepository;    
-        this.userService = userService;
-        this.stripeService = stripeService;
-    }    
-    
-    @GetMapping("/register")
-    public String register() {      
-        return "subscription/register";
-    } 
-    
-    @PostMapping("/create")
-    public String create(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, @RequestParam String paymentMethodId, RedirectAttributes redirectAttributes) {      
-        Nagoyameshiuser user = nagoyameshiuserRepository.getReferenceById(userDetailsImpl.getUser().getId());  
-        
-        if (user.getStripeCustomerId() == null) { 
-            Customer customer = stripeService.createCustomer(user.getName(), user.getEmail(), paymentMethodId);
-            userService.createStripeCustomerId(user, customer.getId());
-        }
-        
-        stripeService.createSubscription(user.getStripeCustomerId(), premiumPlanId);
-        
-        userService.updateRole(user, "ROLE_PAID_MEMBER");
-        userService.refreshAuthenticationByRole("ROLE_PAID_MEMBER");
-        redirectAttributes.addFlashAttribute("successMessage", "有料プランへの登録が完了しました。");    
-        
-        return "redirect:/";
-    } 
-    
-    @GetMapping("/edit")
-    public String edit(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, Model model) {      
-        Nagoyameshiuser user = nagoyameshiuserRepository.getReferenceById(userDetailsImpl.getUser().getId()); 
-        PaymentMethod paymentMethod = stripeService.getDefaultPaymentMethod(user.getStripeCustomerId());  
-        
-        if (paymentMethod != null) {
-            // paymentMethodがnullでない場合のみ、getCard()を呼び出す
-            paymentMethod.getCard();
-        } else {
-            // paymentMethodがnullの場合の処理（エラーメッセージをログに出力する、例外を投げるなど）
-        }
-        
-        model.addAttribute("card", paymentMethod.getCard());
-        model.addAttribute("cardHolderName", paymentMethod.getBillingDetails().getName());
-        
-        return "subscription/edit";
-    }
-    
-    @PostMapping("/update")
-    public String update(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, @RequestParam String paymentMethodId, RedirectAttributes redirectAttributes) {
-        Nagoyameshiuser user = nagoyameshiuserRepository.getReferenceById(userDetailsImpl.getUser().getId());  
-        
-        try {
-            String oldDefaultPaymentMethodId = stripeService.getDefaultPaymentMethodId(user.getStripeCustomerId());        
-            stripeService.updateSubscription(user.getStripeCustomerId(), paymentMethodId);
-            stripeService.detachPaymentMethod(oldDefaultPaymentMethodId);
-            redirectAttributes.addFlashAttribute("successMessage", "お支払い方法を変更しました。");                           
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "お支払い方法の変更に失敗しました。再度お試しください。");
-        }                         
-        
-        return "redirect:/";
-    }
-    
-    @GetMapping("/cancel")
-    public String cancel() {      
-        return "subscription/cancel";
-    }
-    
-    @PostMapping("/delete")
-    public String delete(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, RedirectAttributes redirectAttributes) {
-        Nagoyameshiuser user = nagoyameshiuserRepository.getReferenceById(userDetailsImpl.getUser().getId());          
-        
-        Subscription subscription = stripeService.getSubscription(user.getStripeCustomerId());
-        if (subscription != null) {
-            stripeService.cancelSubscription(subscription);
-            userService.updateRole(user, "ROLE_FREE_MEMBER");
-            userService.refreshAuthenticationByRole("ROLE_FREE_MEMBER");
-            redirectAttributes.addFlashAttribute("successMessage", "有料プランを解約しました。");    
-        } else {
-            redirectAttributes.addFlashAttribute("errorMessage", "有料プランの解約に失敗しました。再度お試しください。");    
-        }                        
-        
-        return "redirect:/";
-    }
+public class SubscriptionController {
+	@Value("${stripe.premium-plan-id}")
+	private String premiumPlanId;
+
+	private final NagoyameshiuserRepository nagoyameshiuserRepository;
+	private final UserService userService;
+	private final StripeService stripeService;
+
+	public SubscriptionController(NagoyameshiuserRepository nagoyameshiuserRepository, UserService userService,
+			StripeService stripeService) {
+		this.nagoyameshiuserRepository = nagoyameshiuserRepository;
+		this.userService = userService;
+		this.stripeService = stripeService;
+	}
+
+	@GetMapping("/register")
+	public String register() {
+		return "subscription/register";
+	}
+
+	@PostMapping("/create")
+	public String create(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, @RequestParam String paymentMethodId,
+			RedirectAttributes redirectAttributes) {
+		Nagoyameshiuser user = nagoyameshiuserRepository.getReferenceById(userDetailsImpl.getUser().getId());
+
+		if (user.getStripeCustomerId() == null) {
+			Customer customer = stripeService.createCustomer(user.getName(), user.getEmail(), paymentMethodId);
+			userService.createStripeCustomerId(user, customer.getId());
+		}
+
+		stripeService.createSubscription(user.getStripeCustomerId(), premiumPlanId);
+
+		userService.updateRole(user, "ROLE_PAID_MEMBER");
+		userService.refreshAuthenticationByRole("ROLE_PAID_MEMBER");
+		redirectAttributes.addFlashAttribute("successMessage", "有料プランへの登録が完了しました。");
+
+		return "redirect:/";
+	}
+
+	@GetMapping("/edit")
+	public String edit(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, Model model) {
+		Nagoyameshiuser user = nagoyameshiuserRepository.getReferenceById(userDetailsImpl.getUser().getId());
+		PaymentMethod paymentMethod = stripeService.getDefaultPaymentMethod(user.getStripeCustomerId());
+
+		if (paymentMethod != null) {
+			// paymentMethodがnullでない場合のみ、getCard()を呼び出す
+			paymentMethod.getCard();
+		} else {
+			// paymentMethodがnullの場合の処理（エラーメッセージをログに出力する、例外を投げるなど）
+		}
+
+		model.addAttribute("card", paymentMethod.getCard());
+		model.addAttribute("cardHolderName", paymentMethod.getBillingDetails().getName());
+
+		return "subscription/edit";
+	}
+
+	@PostMapping("/update")
+	public String update(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, @RequestParam String paymentMethodId,
+			RedirectAttributes redirectAttributes) {
+		Nagoyameshiuser user = nagoyameshiuserRepository.getReferenceById(userDetailsImpl.getUser().getId());
+
+		try {
+			String oldDefaultPaymentMethodId = stripeService.getDefaultPaymentMethodId(user.getStripeCustomerId());
+			stripeService.updateSubscription(user.getStripeCustomerId(), paymentMethodId);
+			stripeService.detachPaymentMethod(oldDefaultPaymentMethodId);
+			redirectAttributes.addFlashAttribute("successMessage", "お支払い方法を変更しました。");
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("errorMessage", "お支払い方法の変更に失敗しました。再度お試しください。");
+		}
+
+		return "redirect:/";
+	}
+
+	@GetMapping("/cancel")
+	public String cancel() {
+		return "subscription/cancel";
+	}
+
+	@PostMapping("/delete")
+	public String delete(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+			RedirectAttributes redirectAttributes) {
+		Nagoyameshiuser user = nagoyameshiuserRepository.getReferenceById(userDetailsImpl.getUser().getId());
+
+		Subscription subscription = stripeService.getSubscription(user.getStripeCustomerId());
+		if (subscription != null) {
+			stripeService.cancelSubscription(subscription);
+			userService.updateRole(user, "ROLE_FREE_MEMBER");
+			userService.refreshAuthenticationByRole("ROLE_FREE_MEMBER");
+			redirectAttributes.addFlashAttribute("successMessage", "有料プランを解約しました。");
+		} else {
+			redirectAttributes.addFlashAttribute("errorMessage", "有料プランの解約に失敗しました。再度お試しください。");
+		}
+
+		return "redirect:/";
+	}
 }

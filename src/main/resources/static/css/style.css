@@ -34,9 +34,10 @@
  	bottom: 0;
  	background-color: #f2f0eb;
  }
- 
+
  .form-control {
-	   height: 35px; /* 高さの調整 */
+ 	height: 35px;
+ 	/* 高さの調整 */
 
  }
 
@@ -51,57 +52,99 @@
  .table {
  	margin-bottom: 1rem;
  	/* テーブルの下の余白を設定 */
- 	 margin-top: 20px;
+ 	margin-top: 20px;
  }
+
  .table thead th {
-    background-color: #f8f9fa;
-    border-top: 2px solid #dee2e6;
-}
+ 	background-color: #f8f9fa;
+ 	border-top: 2px solid #dee2e6;
+ }
 
-.table tbody td {
-    vertical-align: middle;
-}
+ .table tbody td {
+ 	vertical-align: middle;
+ }
 
-/* 詳細を見るリンクのスタイル */
+ /* 詳細を見るリンクのスタイル */
 
 
-.table a:hover {
-    text-decoration: underline;
-}
+ .table a:hover {
+ 	text-decoration: underline;
+ }
+
  .table td,
  .table th {
  	padding: 0.5rem;
  	/* テーブルセルのパディングを調整 */
  	vertical-align: middle;
  	/* セルの内容を垂直中央に配置 */
- 	 min-width: 120px; /* または必要に応じて調整 */
- 	 
+ 	min-width: 120px;
+ 	/* または必要に応じて調整 */
+
  }
- 
+
+ .nagoyameshi-swiper {
+ 	width: 100%;
+ 	height: 480px;
+ }
+
+ .nagoyameshi-swiper img {
+ 	width: 100%;
+ 	height: 480px;
+ 	object-fit: cover;
+ }
+
+ .nagoyameshi-overlay-background {
+ 	position: absolute;
+ 	width: 100%;
+ 	height: 100%;
+ 	background-color: rgba(0, 0, 0, 0.5);
+ 	z-index: 10;
+ }
+
+ .nagoyameshi-overlay-text {
+ 	padding: 0 70px;
+ }
+
+ .nagoyameshi-catchphrase-heading {
+ 	font-size: 36px;
+ 	line-height: 1.5;
+ 	font-family: 'Noto Serif JP', serif;
+ 	font-weight: 600;
+ 	text-shadow: 0.25rem 0.25rem 1rem rgb(0 0 0 / 60%);
+ }
+
+ .nagoyameshi-catchphrase-paragraph {
+ 	font-size: 16px;
+ 	line-height: 2;
+ 	font-family: 'Noto Serif JP', serif;
+ 	font-weight: 400;
+ 	text-shadow: 0.25rem 0.25rem 1rem rgb(0 0 0 / 60%);
+ }
+
  /* 解除ボタンのスタイル */
-.btn-danger {
-    color: #fff;
-    background-color: #dc3545;
-    border-color: #dc3545;
-}
+ .btn-danger {
+ 	color: #fff;
+ 	background-color: #dc3545;
+ 	border-color: #dc3545;
+ }
 
-.btn-danger:hover {
-    background-color: #c82333;
-    border-color: #bd2130;
-}
+ .btn-danger:hover {
+ 	background-color: #c82333;
+ 	border-color: #bd2130;
+ }
 
-/* モーダルのスタイル */
-.modal-content {
-    border-radius: 0.3rem;
-}
+ /* モーダルのスタイル */
+ .modal-content {
+ 	border-radius: 0.3rem;
+ }
 
-.modal-header {
-    border-bottom: 1px solid #dee2e6;
-}
+ .modal-header {
+ 	border-bottom: 1px solid #dee2e6;
+ }
 
-.modal-footer {
-    border-top: 1px solid #dee2e6;
-}
+ .modal-footer {
+ 	border-top: 1px solid #dee2e6;
+ }
 
  /* ページネーションのスタイルを設定 */
  .pagination {
@@ -120,13 +163,16 @@
  .nagoyameshi-btn {
  	background-color: #f0908d !important;
  	transition: 0.1s;
- 	  transform: translateX(-10px); /* 左に10pxずらす */
- 	
+ 	transform: translateX(-10px);
+ 	/* 左に10pxずらす */
+
  }
+
  .nagoyameshi-btn1 {
-	 	background-color: #f0908d !important;
+ 	background-color: #f0908d !important;
  	transition: 0.1s;
- 	 transform: translateY(-6px); /* 左に10pxずらす */
+ 	transform: translateY(-6px);
+ 	/* 左に10pxずらす */
  }
 
  .nagoyameshi-btn:hover {
@@ -345,21 +391,29 @@
  	/* 画像をアスペクト比を保持してフィットさせる */
  }
 
-.image-container {
-  width: 100%; /* コンテナの幅を指定 */
-  height: 0; /* 高さを0に設定し、padding-topで高さを調整 */
-  padding-top: 56.25%; /* 16:9のアスペクト比 (例: 9 / 16 * 100 = 56.25%) */
-  position: relative; /* 子要素のimgを絶対配置するための基準点 */
-}
+ .image-container {
+ 	width: 100%;
+ 	/* コンテナの幅を指定 */
+ 	height: 0;
+ 	/* 高さを0に設定し、padding-topで高さを調整 */
+ 	padding-top: 56.25%;
+ 	/* 16:9のアスペクト比 (例: 9 / 16 * 100 = 56.25%) */
+ 	position: relative;
+ 	/* 子要素のimgを絶対配置するための基準点 */
+ }
 
-.image-container img {
-  position: absolute; /* 親要素に対して絶対位置で配置 */
-  top: 0;
-  left: 0;
-  width: 100%; /* 画像をコンテナの幅いっぱいに広げる */
-  height: 100%; /* 画像をコンテナの高さいっぱいに広げる */
-  object-fit: cover; /* 画像のアスペクト比を保ちつつ、コンテナを完全に埋める */
-}
+ .image-container img {
+ 	position: absolute;
+ 	/* 親要素に対して絶対位置で配置 */
+ 	top: 0;
+ 	left: 0;
+ 	width: 100%;
+ 	/* 画像をコンテナの幅いっぱいに広げる */
+ 	height: 100%;
+ 	/* 画像をコンテナの高さいっぱいに広げる */
+ 	object-fit: cover;
+ 	/* 画像のアスペクト比を保ちつつ、コンテナを完全に埋める */
+ }
 
  .image-container:hover img {
  	transform: scale(1.05);
@@ -434,81 +488,98 @@
  	transition: all 0.3s ease;
  }
 
-/* レビュー項目のスタイルを設定 */
-.review-item {
-    border: 1px solid #ddd; /* 枠線 */
-    padding: 1rem; /* 内側の余白 */
-    margin-bottom: 1rem; /* 下の余白 */
-    border-radius: 4px; /* 角の丸み */
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* 影 */
-}
+ /* レビュー項目のスタイルを設定 */
+ .review-item {
+ 	border: 1px solid #ddd;
+ 	/* 枠線 */
+ 	padding: 1rem;
+ 	/* 内側の余白 */
+ 	margin-bottom: 1rem;
+ 	/* 下の余白 */
+ 	border-radius: 4px;
+ 	/* 角の丸み */
+ 	box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+ 	/* 影 */
+ }
 
-/* レビューのタイトルスタイル */
-.review-item h4 {
-    color: #333; /* テキスト色 */
-    margin-bottom: 0.5rem; /* 下の余白 */
-}
+ /* レビューのタイトルスタイル */
+ .review-item h4 {
+ 	color: #333;
+ 	/* テキスト色 */
+ 	margin-bottom: 0.5rem;
+ 	/* 下の余白 */
+ }
 
-/* レビューの評価スタイル */
-.review-item p {
-    margin-bottom: 0.5rem; /* 下の余白 */
-}
+ /* レビューの評価スタイル */
+ .review-item p {
+ 	margin-bottom: 0.5rem;
+ 	/* 下の余白 */
+ }
 
-/* ボタンのスタイル */
-.review-item .btn-secondary {
-    margin-right: 0.5rem; /* 右の余白 */
-}
+ /* ボタンのスタイル */
+ .review-item .btn-secondary {
+ 	margin-right: 0.5rem;
+ 	/* 右の余白 */
+ }
 
-/* 星のスタイル */
-.review-item span {
-    font-size: 1rem; /* 星のサイズ */
-    margin-right: 0.1rem; /* 星の間の余白 */
-}
+ /* 星のスタイル */
+ .review-item span {
+ 	font-size: 1rem;
+ 	/* 星のサイズ */
+ 	margin-right: 0.1rem;
+ 	/* 星の間の余白 */
+ }
 
-/* レビューの内容スタイル */
-.review-item .review-content {
-    font-size: 0.9rem; /* テキストのサイズ */
-    color: #555; /* テキストの色 */
-    line-height: 1.4; /* 行の高さ */
-}
+ /* レビューの内容スタイル */
+ .review-item .review-content {
+ 	font-size: 0.9rem;
+ 	/* テキストのサイズ */
+ 	color: #555;
+ 	/* テキストの色 */
+ 	line-height: 1.4;
+ 	/* 行の高さ */
+ }
 
-.reviews-border {
-    
-	 border-top: 1px solid rgb(117, 117, 117); /* グレイ */
-}
+ .reviews-border {
 
-.form-group {
-    text-align: center; /* テキストを中央揃えに */
- 
-}
+ 	border-top: 1px solid rgb(117, 117, 117);
+ 	/* グレイ */
+ }
 
-.review-edit{
-	margin-bottom: 1rem;
-}
+ .form-group {
+ 	text-align: center;
+ 	/* テキストを中央揃えに */
 
-.btn {
-	  margin: 0.5rem; /* ボタンの余白を設定 */
-}
+ }
 
-/* クレジットカード番号入力フォーム */
-.nagoyameshi-card-holder-name,
-.nagoyameshi-card-element {
-  border-radius: .375rem;
-  padding: 12px;
-  border: 1px solid #ced4da;
-  height: 44px;
-  width: 100%;
-  background: white;
-}
+ .review-edit {
+ 	margin-bottom: 1rem;
+ }
 
-.nagoyameshi-card-holder-name {
-  font-family: sans-serif;
-  outline: none;
-}
+ .btn {
+ 	margin: 0.5rem;
+ 	/* ボタンの余白を設定 */
+ }
 
-.nagoyameshi-card-error {
-  display: none;
-}
+ /* クレジットカード番号入力フォーム */
+ .nagoyameshi-card-holder-name,
+ .nagoyameshi-card-element {
+ 	border-radius: .375rem;
+ 	padding: 12px;
+ 	border: 1px solid #ced4da;
+ 	height: 44px;
+ 	width: 100%;
+ 	background: white;
+ }
+
+ .nagoyameshi-card-holder-name {
+ 	font-family: sans-serif;
+ 	outline: none;
+ }
+
+ .nagoyameshi-card-error {
+ 	display: none;
+ }
 
 
  @media screen and (min-width: 1400px) {
@@ -534,11 +605,12 @@
  	.btn {
  		font-size: 0.8rem;
  	}
- 	 .container {
-        padding: 0 15px;
-    }
 
-    .breadcrumb-item + .breadcrumb-item::before {
-        content: ">";
-    }
+ 	.container {
+ 		padding: 0 15px;
+ 	}
+
+ 	.breadcrumb-item+.breadcrumb-item::before {
+ 		content: ">";
+ 	}
  }

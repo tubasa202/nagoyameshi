@@ -33,7 +33,7 @@
                             </div>                                                 
                             
                             <div class="mb-3">
-                                <img th:if="${category.getImageName()}" th:src="@{/categorystorage/__${category.getImageName()}__}" class="w-100" alt="カテゴリ画像">
+                                <img th:if="${category.getImageName()}" th:src="@{/storage/category/__${category.getImageName()}__}" class="w-100" alt="カテゴリ画像">
                                 <img th:unless="${category.getImageName()}" th:src="@{/images/noImage.png}" class="w-100" alt="NO IMAGE">
                             </div>   
                             

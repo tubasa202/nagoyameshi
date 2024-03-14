@@ -18,69 +18,69 @@ import com.example.nagoyameshi.repository.CategoryRepository;
 
 @Service
 public class CategoryService {
-    private final CategoryRepository categoryRepository;
+	private final CategoryRepository categoryRepository;
 
-    public CategoryService(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
-    
-//    トップ画面に表示する
-    public List<Category> findAllCategories() {
-        return categoryRepository.findAll();
-    }
+	public CategoryService(CategoryRepository categoryRepository) {
+		this.categoryRepository = categoryRepository;
+	}
 
-    @Transactional
-    public void create(CategoryRegisterForm categoryRegisterForm) {
-        Category category = new Category();
-        MultipartFile imageFile = categoryRegisterForm.getImageFile();
+	//    トップ画面に表示する
+	public List<Category> findAllCategories() {
+		return categoryRepository.findAll();
+	}
 
-        if (!imageFile.isEmpty()) {
-            String imageName = imageFile.getOriginalFilename();
-            String hashedImageName = generateNewFileName(imageName);
-            Path filePath = Paths.get("src/main/resources/static/categorystorage/" + hashedImageName);
-            copyImageFile(imageFile, filePath);
-            category.setImageName(hashedImageName);
-        }
+	@Transactional
+	public void create(CategoryRegisterForm categoryRegisterForm) {
+		Category category = new Category();
+		MultipartFile imageFile = categoryRegisterForm.getImageFile();
 
-        category.setName(categoryRegisterForm.getName());
+		if (!imageFile.isEmpty()) {
+			String imageName = imageFile.getOriginalFilename();
+			String hashedImageName = generateNewFileName(imageName);
+			Path filePath = Paths.get("src/main/resources/static/categorystorage/" + hashedImageName);
+			copyImageFile(imageFile, filePath);
+			category.setImageName(hashedImageName);
+		}
 
-        categoryRepository.save(category);
-    }
-    
-    @Transactional
-    public void update(CategoryEditForm categoryEditForm) {
-        Category category = categoryRepository.getReferenceById(categoryEditForm.getId());
-        MultipartFile imageFile = categoryEditForm.getImageFile();
-        
-        if (!imageFile.isEmpty()) {
-            String imageName = imageFile.getOriginalFilename(); 
-            String hashedImageName = generateNewFileName(imageName);
-            Path filePath = Paths.get("src/main/resources/static/categorystorage/" + hashedImageName);
-            copyImageFile(imageFile, filePath);
-            category.setImageName(hashedImageName);
-        }
-        
-        category.setName(categoryEditForm.getName());                
-                    
-        categoryRepository.save(category);
-    }    
+		category.setName(categoryRegisterForm.getName());
 
-    // UUIDを使って生成したファイル名を返す
-    public String generateNewFileName(String fileName) {
-        String[] fileNames = fileName.split("\\.");
-        for (int i = 0; i < fileNames.length - 1; i++) {
-            fileNames[i] = UUID.randomUUID().toString();
-        }
-        String hashedFileName = String.join(".", fileNames);
-        return hashedFileName;
-    }
+		categoryRepository.save(category);
+	}
 
-    // 画像ファイルを指定したファイルにコピーする
-    public void copyImageFile(MultipartFile imageFile, Path filePath) {
-        try {
-            Files.copy(imageFile.getInputStream(), filePath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	@Transactional
+	public void update(CategoryEditForm categoryEditForm) {
+		Category category = categoryRepository.getReferenceById(categoryEditForm.getId());
+		MultipartFile imageFile = categoryEditForm.getImageFile();
+
+		if (!imageFile.isEmpty()) {
+			String imageName = imageFile.getOriginalFilename();
+			String hashedImageName = generateNewFileName(imageName);
+			Path filePath = Paths.get("src/main/resources/static/storage/category" + hashedImageName);
+			copyImageFile(imageFile, filePath);
+			category.setImageName(hashedImageName);
+		}
+
+		category.setName(categoryEditForm.getName());
+
+		categoryRepository.save(category);
+	}
+
+	// UUIDを使って生成したファイル名を返す
+	public String generateNewFileName(String fileName) {
+		String[] fileNames = fileName.split("\\.");
+		for (int i = 0; i < fileNames.length - 1; i++) {
+			fileNames[i] = UUID.randomUUID().toString();
+		}
+		String hashedFileName = String.join(".", fileNames);
+		return hashedFileName;
+	}
+
+	// 画像ファイルを指定したファイルにコピーする
+	public void copyImageFile(MultipartFile imageFile, Path filePath) {
+		try {
+			Files.copy(imageFile.getInputStream(), filePath);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

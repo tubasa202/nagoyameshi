@@ -45,21 +45,22 @@ public class AdminRestaurantController {
 		this.categoryRepository = categoryRepository;
 		this.holidayRepository = holidayRepository;
 	}
-	
+
 	@GetMapping("/restaurants")
 	public String searchRestaurants(Model model,
-	                                @RequestParam(required = false) String keyword,
-	                                @RequestParam(required = false) String area,
-	                                @RequestParam(required = false) String category) {
-	    Page<Restaurant> restaurants = restaurantService.searchRestaurants(keyword, area, category, PageRequest.of(0, 10));
-	    model.addAttribute("restaurants", restaurants.getContent());
-	    return "restaurants/index";
+			@RequestParam(required = false) String keyword,
+			@RequestParam(required = false) String area,
+			@RequestParam(required = false) String category) {
+		Page<Restaurant> restaurants = restaurantService.searchRestaurants(keyword, area, category,
+				PageRequest.of(0, 10));
+		model.addAttribute("restaurants", restaurants.getContent());
+		return "restaurants/index";
 	}
-	
+
 	@GetMapping("/index")
-	 public String index(Model model) {
-       List<Restaurant> newRestaurants = restaurantRepository.findTop5ByOrderByCreatedAtDesc();
-       model.addAttribute("newRestaurants", newRestaurants);  
+	public String index(Model model) {
+		List<Restaurant> newRestaurants = restaurantRepository.findTop5ByOrderByCreatedAtDesc();
+		model.addAttribute("newRestaurants", newRestaurants);
 		return "/admin/index";
 	}
 
@@ -67,6 +68,7 @@ public class AdminRestaurantController {
 	public String index(Model model,
 			@PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC) Pageable pageable,
 			@RequestParam(name = "keyword", required = false) String keyword,
+			@RequestParam(name = "price", required = false) Integer price,
 			@RequestParam(name = "category", required = false) String category) {
 
 		Page<Restaurant> restaurantPage;
@@ -76,6 +78,8 @@ public class AdminRestaurantController {
 		} else if (keyword != null && !keyword.isEmpty()) {
 			restaurantPage = restaurantRepository.findByNameLikeOrAddressLike("%" + keyword + "%", "%" + keyword + "%",
 					pageable);
+		} else if (price != null) {
+			restaurantPage = restaurantRepository.findByLowestPriceLessThanEqual(price, pageable);
 		} else {
 			restaurantPage = restaurantRepository.findAll(pageable);
 		}
@@ -99,7 +103,7 @@ public class AdminRestaurantController {
 	@GetMapping("/register")
 	public String register(Model model) {
 		List<Category> categories = categoryRepository.findAll();
-	    model.addAttribute("categories", categories);
+		model.addAttribute("categories", categories);
 		model.addAttribute("restaurantRegisterForm", new RestaurantRegisterForm());
 
 		// 休日情報の取得

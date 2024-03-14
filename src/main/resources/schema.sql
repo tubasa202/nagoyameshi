@@ -11,10 +11,10 @@ CREATE TABLE IF NOT EXISTS restaurants(
      opening_time TIME,
      closing_time TIME,
      category_id INT NOT NULL, -- カテゴリIDを追加
-     FOREIGN KEY (category_id) REFERENCES categories(id),
      seating_capacity INT NOT NULL,     
      created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+     FOREIGN KEY (category_id) REFERENCES categories(id)
 );
 
  

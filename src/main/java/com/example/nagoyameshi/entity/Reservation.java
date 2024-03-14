@@ -21,36 +21,37 @@ import lombok.Data;
 @Data
 public class Reservation {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-    @Column(name = "reserved_datetime")
-    private LocalDateTime reservedDatetime;
+	@Column(name = "reserved_datetime")
+	private LocalDateTime reservedDatetime;
 
-    @Column(name = "number_of_people")
-    private Integer numberOfPeople;
+	@Column(name = "number_of_people")
+	private Integer numberOfPeople;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private Nagoyameshiuser nagoyameshiuser;
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private Nagoyameshiuser nagoyameshiuser;
 
-    @ManyToOne
-    @JoinColumn(name = "restaurant_id")
-    
-    private Restaurant restaurant;
+	@ManyToOne
+	@JoinColumn(name = "restaurant_id")
 
-    @Column(name = "created_at")
-    @CreationTimestamp
-    private LocalDateTime createdAt;
+	private Restaurant restaurant;
 
-    @Column(name = "updated_at")
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
+	@Column(name = "created_at")
+	@CreationTimestamp
+	private LocalDateTime createdAt;
 
-    // Getters and Setters
-    
-    public String getFormattedReservedDateTime() {
-        return this.reservedDatetime != null ? this.reservedDatetime.format(DateTimeFormatter.ofPattern("HH:mm")) : null;
-    }
+	@Column(name = "updated_at")
+	@UpdateTimestamp
+	private LocalDateTime updatedAt;
+
+	// Getters and Setters
+
+	public String getFormattedReservedDateTime() {
+		return this.reservedDatetime != null ? this.reservedDatetime.format(DateTimeFormatter.ofPattern("HH:mm"))
+				: null;
+	}
 }

@@ -22,74 +22,76 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class AuthController {
-	private final UserService userService;    
+	private final UserService userService;
 	private final SignupEventPublisher signupEventPublisher;
 	private final VerificationTokenService verificationTokenService;
-    
-    public AuthController(UserService userService, SignupEventPublisher signupEventPublisher, VerificationTokenService verificationTokenService) {        
-        this.userService = userService;
+
+	public AuthController(UserService userService, SignupEventPublisher signupEventPublisher,
+			VerificationTokenService verificationTokenService) {
+		this.userService = userService;
 		this.signupEventPublisher = signupEventPublisher;
-		this.verificationTokenService = verificationTokenService;        
-    }  
-    
+		this.verificationTokenService = verificationTokenService;
+	}
+
 	@GetMapping("/login")
 	public String login() {
 		return "auth/login";
 	}
-	
+
 	@GetMapping("/signup")
 	public String signup(Model model) {
 		model.addAttribute("signupForm", new SignupForm());
 		return "auth/signup";
 	}
-	
+
 	@GetMapping("/forgot-password") // パスワード再設定ページのマッピングを定義
 	public String forgotPassword() {
-        return "auth/forgot-password"; // パスワード再設定ページの対応するThymeleafテンプレートを返す
-    }
-	
-	@PostMapping("/signup")
-    public String signup(@ModelAttribute @Validated SignupForm signupForm, BindingResult bindingResult, RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {      
-        // メールアドレスが登録済みであれば、BindingResultオブジェクトにエラー内容を追加する
-        if (userService.isEmailRegistered(signupForm.getEmail())) {
-            FieldError fieldError = new FieldError(bindingResult.getObjectName(), "email", "すでに登録済みのメールアドレスです。");
-            bindingResult.addError(fieldError);                       
-        }    
-        
-        // パスワードとパスワード（確認用）の入力値が一致しなければ、BindingResultオブジェクトにエラー内容を追加する
-        if (!userService.isSamePassword(signupForm.getPassword(), signupForm.getPasswordConfirmation())) {
-            FieldError fieldError = new FieldError(bindingResult.getObjectName(), "password", "パスワードが一致しません。");
-            bindingResult.addError(fieldError);
-        }        
-        
-        if (bindingResult.hasErrors()) {
-            return "auth/signup";
-        }
-        
-        Nagoyameshiuser createdUser = userService.create(signupForm);
-        String requestUrl = new String(httpServletRequest.getRequestURL());
-        signupEventPublisher.publishSignupEvent(createdUser, requestUrl);
-        redirectAttributes.addFlashAttribute("successMessage", "ご入力いただいたメールアドレスに認証メールを送信しました。メールに記載されているリンクをクリックし、会員登録を完了してください。");  
+		return "auth/forgot-password"; // パスワード再設定ページの対応するThymeleafテンプレートを返す
+	}
 
-        return "redirect:/";
-    }    
-	
+	@PostMapping("/signup")
+	public String signup(@ModelAttribute @Validated SignupForm signupForm, BindingResult bindingResult,
+			RedirectAttributes redirectAttributes, HttpServletRequest httpServletRequest) {
+		// メールアドレスが登録済みであれば、BindingResultオブジェクトにエラー内容を追加する
+		if (userService.isEmailRegistered(signupForm.getEmail())) {
+			FieldError fieldError = new FieldError(bindingResult.getObjectName(), "email", "すでに登録済みのメールアドレスです。");
+			bindingResult.addError(fieldError);
+		}
+
+		// パスワードとパスワード（確認用）の入力値が一致しなければ、BindingResultオブジェクトにエラー内容を追加する
+		if (!userService.isSamePassword(signupForm.getPassword(), signupForm.getPasswordConfirmation())) {
+			FieldError fieldError = new FieldError(bindingResult.getObjectName(), "password", "パスワードが一致しません。");
+			bindingResult.addError(fieldError);
+		}
+
+		if (bindingResult.hasErrors()) {
+			return "auth/signup";
+		}
+
+		Nagoyameshiuser createdUser = userService.create(signupForm);
+		String requestUrl = new String(httpServletRequest.getRequestURL());
+		signupEventPublisher.publishSignupEvent(createdUser, requestUrl);
+		redirectAttributes.addFlashAttribute("successMessage",
+				"ご入力いただいたメールアドレスに認証メールを送信しました。メールに記載されているリンクをクリックし、会員登録を完了してください。");
+
+		return "redirect:/";
+	}
+
 	@GetMapping("/signup/verify")
-    public String verify(@RequestParam(name = "token") String token, Model model) {
-        VerificationToken verificationToken = verificationTokenService.getVerificationToken(token);
-        
-        if (verificationToken != null) {
-            Nagoyameshiuser nagoyameshiuser = verificationToken.getNagoyameshiuser();  
-            userService.enableUser(nagoyameshiuser);
-            String successMessage = "会員登録が完了しました。";
-            model.addAttribute("successMessage", successMessage);            
-        } else {
-            String errorMessage = "トークンが無効です。";
-            model.addAttribute("errorMessage", errorMessage);
-        }
-        
-        return "auth/verify";         
-    }    
-	
+	public String verify(@RequestParam(name = "token") String token, Model model) {
+		VerificationToken verificationToken = verificationTokenService.getVerificationToken(token);
+
+		if (verificationToken != null) {
+			Nagoyameshiuser nagoyameshiuser = verificationToken.getNagoyameshiuser();
+			userService.enableUser(nagoyameshiuser);
+			String successMessage = "会員登録が完了しました。";
+			model.addAttribute("successMessage", successMessage);
+		} else {
+			String errorMessage = "トークンが無効です。";
+			model.addAttribute("errorMessage", errorMessage);
+		}
+
+		return "auth/verify";
+	}
 
 }

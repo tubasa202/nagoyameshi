@@ -35,6 +35,10 @@ import jakarta.servlet.http.HttpServletRequest;
 @RequestMapping("/restaurants/{restaurantId}/reservations")
 public class ReservationController {
 
+	private static final String ROLE_FREE_MEMBER = "ROLE_FREE_MEMBER";
+	private static final String SUBSCRIPTION_MESSAGE = "この機能を利用するには有料プランへの登録が必要です。";
+	private static final String SUBSCRIPTION_URL = "/subscription/register";
+
 	private final RestaurantRepository restaurantRepository;
 	private final ReservationService reservationService;
 	private final RestaurantService restaurantService;
@@ -55,9 +59,17 @@ public class ReservationController {
 	@PostMapping("/create")
 	public String create(@PathVariable("restaurantId") Integer restaurantId,
 			@ModelAttribute("reservationForm") ReservationForm reservationForm,
-			 RedirectAttributes redirectAttributes, HttpServletRequest request) {
+			RedirectAttributes redirectAttributes, HttpServletRequest request) {
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		// フリーメンバーの場合、有料プラン登録ページへリダイレクト
+		boolean isFreeMember = authentication.getAuthorities().stream()
+				.anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(ROLE_FREE_MEMBER));
+		if (isFreeMember) {
+			redirectAttributes.addFlashAttribute("subscriptionMessage", SUBSCRIPTION_MESSAGE);
+			return "redirect:" + SUBSCRIPTION_URL;
+		}
 
 		if (authentication.getPrincipal() instanceof UserDetails) {
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -95,25 +107,24 @@ public class ReservationController {
 
 				// 予約対象のレストランを設定
 				Restaurant restaurant = restaurantService.findById(restaurantId)
-				        .orElseThrow(() -> new IllegalArgumentException("Invalid restaurant Id: " + restaurantId));
+						.orElseThrow(() -> new IllegalArgumentException("Invalid restaurant Id: " + restaurantId));
 				reservation.setRestaurant(restaurant);
-
 
 				// 予約エンティティにユーザーを設定
 				reservation.setNagoyameshiuser(user); // ここでユーザーエンティティを設定
 
 				// 保存処理
 				reservationService.createReservation(reservation);
-				
+
 				// 予約完了イベントの発行
 				eventPublisher.completeReservation(reservation);
 
 				// 予約完了後に予約リストページへリダイレクト
 				return "redirect:/reservations/index";
 			} catch (Exception e) {
-			    e.printStackTrace(); // サーバのログに例外のスタックトレースを出力
-			    redirectAttributes.addFlashAttribute("errorMessage", "予約に失敗しました。エラー: " + e.getMessage());
-			    return "redirect:/restaurants/" + restaurantId + "/reservations/register";
+				e.printStackTrace(); // サーバのログに例外のスタックトレースを出力
+				redirectAttributes.addFlashAttribute("errorMessage", "予約に失敗しました。エラー: " + e.getMessage());
+				return "redirect:/restaurants/" + restaurantId + "/reservations/register";
 			}
 		} else {
 			// 認証情報がUserDetailsインスタンスではない場合

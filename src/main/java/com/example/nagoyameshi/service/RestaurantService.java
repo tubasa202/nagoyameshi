@@ -7,18 +7,17 @@ import java.nio.file.Paths;
 import java.sql.Time;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.nagoyameshi.dto.RestaurantRatingDTO;
 import com.example.nagoyameshi.entity.Category;
 import com.example.nagoyameshi.entity.Holidays;
 import com.example.nagoyameshi.entity.Restaurant;
@@ -36,86 +35,86 @@ public class RestaurantService {
 		this.restaurantRepository = restaurantRepository;
 		this.holidayRepository = holidayRepository;
 	}
-	
-	 public Optional<Restaurant> findById(Integer id) {
-	        return restaurantRepository.findById(id);
-	    }
-	
+
+	public Optional<Restaurant> findById(Integer id) {
+		return restaurantRepository.findById(id);
+	}
+
 	public List<Integer> generateAvailablePeopleOptions(Integer restaurantId) {
-	    Restaurant restaurant = restaurantRepository.findById(restaurantId)
-	            .orElseThrow(() -> new IllegalArgumentException("Invalid restaurant Id: " + restaurantId));
-	    int capacity = restaurant.getSeatingCapacity();
-	    
-	    List<Integer> availablePeopleOptions = new ArrayList<>();
-	    for (int i = 1; i <= capacity; i++) {
-	        availablePeopleOptions.add(i);
-	    }
-	    return availablePeopleOptions;
+		Restaurant restaurant = restaurantRepository.findById(restaurantId)
+				.orElseThrow(() -> new IllegalArgumentException("Invalid restaurant Id: " + restaurantId));
+		int capacity = restaurant.getSeatingCapacity();
+
+		List<Integer> availablePeopleOptions = new ArrayList<>();
+		for (int i = 1; i <= capacity; i++) {
+			availablePeopleOptions.add(i);
+		}
+		return availablePeopleOptions;
 	}
-	
-	 // レストランの営業時間に基づいて選択可能な時間のリストを生成
+
+	// レストランの営業時間に基づいて選択可能な時間のリストを生成
 	public List<String> generateAvailableTimes(Integer restaurantId) {
-        Restaurant restaurant = restaurantRepository.findById(restaurantId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid restaurant Id: " + restaurantId));
-        List<String> availableTimes = new ArrayList<>();
+		Restaurant restaurant = restaurantRepository.findById(restaurantId)
+				.orElseThrow(() -> new IllegalArgumentException("Invalid restaurant Id: " + restaurantId));
+		List<String> availableTimes = new ArrayList<>();
 
-        // java.sql.Timeをjava.time.LocalTimeに変換
-        LocalTime openingTime = restaurant.getOpeningTime().toLocalTime();
-        LocalTime closingTime = restaurant.getClosingTime().toLocalTime();
+		// java.sql.Timeをjava.time.LocalTimeに変換
+		LocalTime openingTime = restaurant.getOpeningTime().toLocalTime();
+		LocalTime closingTime = restaurant.getClosingTime().toLocalTime();
 
-        // 例: 30分間隔で時間を追加
-        for (LocalTime time = openingTime; time.isBefore(closingTime); time = time.plusMinutes(30)) {
-            availableTimes.add(time.toString());
-        }
+		// 例: 30分間隔で時間を追加
+		for (LocalTime time = openingTime; time.isBefore(closingTime); time = time.plusMinutes(30)) {
+			availableTimes.add(time.toString());
+		}
 
-        return availableTimes;
-    }
-	
-	public List<RestaurantRatingDTO> getTopRatedRestaurants() {
-	    return restaurantRepository.findTopRatedRestaurants(PageRequest.of(0, 5));
+		return availableTimes;
 	}
-	
-	
-	public Page<RestaurantRatingDTO> getRestaurantsSortedByRatings(Pageable pageable) {
-	    // 直接Pageオブジェクトを取得
-	    Page<RestaurantRatingDTO> dtoPage = restaurantRepository.findRestaurantsWithRatings(pageable);
-	    
-	    // Pageの各DTOに対して加重評価を計算
-	    dtoPage.forEach(dto -> {
-	        // 基準値を取り除き、平均評価とレビュー数の積で加重評価を計算
-	        double weightedRating = dto.getAverageRating() * dto.getReviewCount();
-	        dto.setWeightedRating(weightedRating);
-	    });
-	    
-	    // 加工したPageオブジェクトをそのまま返す
-	    return dtoPage;
+
+	// 価格（最低価格と最高価格の平均）が安い順に並べ替える
+	public List<Restaurant> sortByPriceAsc(List<Restaurant> restaurants) {
+		restaurants.sort(Comparator.comparingDouble(r -> (r.getLowestPrice() + r.getHighestPrice()) / 2.0));
+
+		return restaurants;
+	}
+
+	// 評価が高い順に並べ替える（平均評価や標準偏差を使った独自のアルゴリズム）
+	public List<Restaurant> sortByRatingDesc(List<Restaurant> restaurants) {
+		double averageScore = restaurantRepository.findAverageScore();
+		double standardDeviation = restaurantRepository.findStandardDeviation();
+
+		restaurants.sort((r1, r2) -> {
+			double rating1 = ((r1.getAverageScore() - averageScore) * 10 / standardDeviation) * r1.getReviews().size();
+			double rating2 = ((r2.getAverageScore() - averageScore) * 10 / standardDeviation) * r2.getReviews().size();
+			return Double.compare(rating2, rating1);
+		});
+
+		return restaurants;
+
 	}
 
 	// RestaurantService.java
 	public Page<Restaurant> searchRestaurants(String keyword, String area, String category, Pageable pageable) {
-	    if (keyword != null && !keyword.isEmpty()) {
-	        return restaurantRepository.findByNameLike("%" + keyword + "%", pageable);
-	    } else if (area != null && !area.isEmpty()) {
-	        return restaurantRepository.findByAddressLike("%" + area + "%", pageable);
-	    } else if (category != null && !category.isEmpty()) {
-	        // カテゴリ名での検索を正確に行う
-	        return restaurantRepository.findByCategoryNameLike("%" + category + "%", pageable);
-	    } else {
-	        return restaurantRepository.findAll(pageable);
-	    }
+		if (keyword != null && !keyword.isEmpty()) {
+			return restaurantRepository.findByNameLike("%" + keyword + "%", pageable);
+		} else if (area != null && !area.isEmpty()) {
+			return restaurantRepository.findByAddressLike("%" + area + "%", pageable);
+		} else if (category != null && !category.isEmpty()) {
+			// カテゴリ名での検索を正確に行う
+			return restaurantRepository.findByCategoryNameLike("%" + category + "%", pageable);
+		} else {
+			return restaurantRepository.findAll(pageable);
+		}
 	}
-	
-	
-	
-	 // 最近追加されたレストランを取得するメソッド
-    public List<Restaurant> findNewRestaurants(int limit) {
-        return restaurantRepository.findTop5ByOrderByCreatedAtDesc();
-    }
-	
+
+	// 最近追加されたレストランを取得するメソッド
+	public List<Restaurant> findNewRestaurants(int limit) {
+		return restaurantRepository.findTop5ByOrderByCreatedAtDesc();
+	}
+
 	// レストランの総数を取得するメソッド
-    public long getTotalNumberOfRestaurants() {
-        return restaurantRepository.count();
-    }
+	public long getTotalNumberOfRestaurants() {
+		return restaurantRepository.count();
+	}
 
 	// 休日情報を保存するメソッド
 	@Transactional
@@ -164,7 +163,7 @@ public class RestaurantService {
 		if (!imageFile.isEmpty()) {
 			String image = imageFile.getOriginalFilename();
 			String hashedImage = generateNewFileName(image);
-			java.nio.file.Path filePath = Paths.get("src/main/resources/static/storage/" + hashedImage);
+			java.nio.file.Path filePath = Paths.get("src/main/resources/static/storage/restaurant" + hashedImage);
 			copyImageFile(imageFile, filePath);
 			restaurant.setImage(hashedImage);
 		}
@@ -177,10 +176,9 @@ public class RestaurantService {
 		restaurant.setAddress(restaurantRegisterForm.getAddress());
 		restaurant.setPhoneNumber(restaurantRegisterForm.getPhoneNumber());
 		restaurant.setSeatingCapacity(restaurantRegisterForm.getSeatingCapacity());
-		
-		 List<Holidays> holidays = holidayRepository.findAllById(newHolidayIds);
-		    restaurant.setHolidays(holidays);
-		
+
+		List<Holidays> holidays = holidayRepository.findAllById(newHolidayIds);
+		restaurant.setHolidays(holidays);
 
 		restaurantRepository.save(restaurant);
 	}
@@ -212,9 +210,9 @@ public class RestaurantService {
 		restaurant.setAddress(restaurantEditForm.getAddress());
 		restaurant.setPhoneNumber(restaurantEditForm.getPhoneNumber());
 		restaurant.setSeatingCapacity(restaurantEditForm.getSeatingCapacity());
-		
-		 List<Holidays> holidays = holidayRepository.findAllById(newHolidayIds);
-		    restaurant.setHolidays(holidays);
+
+		List<Holidays> holidays = holidayRepository.findAllById(newHolidayIds);
+		restaurant.setHolidays(holidays);
 
 		restaurantRepository.save(restaurant);
 	}

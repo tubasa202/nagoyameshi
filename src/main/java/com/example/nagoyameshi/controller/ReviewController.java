@@ -3,6 +3,8 @@ package com.example.nagoyameshi.controller;
 import java.security.Principal;
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,16 +39,27 @@ public class ReviewController {
 
 	@GetMapping("/register")
 	public String showReviewForm(@PathVariable("restaurantId") Integer restaurantId, Model model) {
-		Restaurant restaurant = restaurantRepository.getReferenceById(restaurantId);
+		// ユーザーの認証情報を取得
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+		// フリーメンバーの場合、有料プラン登録ページへリダイレクト
+		if (isFreeMember(authentication)) {
+			return "redirect:/subscription/register";
+		}
+
+		Restaurant restaurant = restaurantRepository.getReferenceById(restaurantId);
 		if (restaurant == null) {
 			return "redirect:/error";
 		}
 
-		model.addAttribute("reviewForm", new ReviewRegisterForm());//レビューに変更
+		model.addAttribute("reviewForm", new ReviewRegisterForm());
 		model.addAttribute("restaurant", restaurant);
-		return "reviews/register"; // ファイルの配置に応じてパスを調整
+		return "reviews/register";
+	}
 
+	private boolean isFreeMember(Authentication authentication) {
+		return authentication.getAuthorities().stream()
+				.anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_FREE_MEMBER"));
 	}
 
 	@GetMapping("/edit/{reviewId}")

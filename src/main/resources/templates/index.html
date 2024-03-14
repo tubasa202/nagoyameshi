@@ -5,6 +5,8 @@
 	<div th:replace="~{fragment :: meta}"></div>
 
 	<div th:replace="~{fragment :: styles}"></div>
+	
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css">
 
 	<title>NAGOYAMESHI</title>
 </head>
@@ -15,6 +17,23 @@
 		<div th:replace="~{fragment :: header}"></div>
 
 		<main>
+			<div>
+                    <div class="swiper nagoyameshi-swiper">
+                        <div class="swiper-wrapper">    
+                            <div class="swiper-slide"><img th:src="@{/images/main1.jpg}"></div>
+                            <div class="swiper-slide"><img th:src="@{/images/main2.jpg}"></div>
+                            <div class="swiper-slide"><img th:src="@{/images/main3.jpg}"></div> 
+                            <div class="d-flex align-items-center nagoyameshi-overlay-background">
+                                <div class="container nagoyameshi-container nagoyameshi-overlay-text">                    
+                                    <h1 class="text-white nagoyameshi-catchphrase-heading">名古屋ならではの味を、<br>見つけよう</h1>   
+                                    <p class="text-white nagoyameshi-catchphrase-paragraph">NAGOYAMESHIは、<br>名古屋市のB級グルメ専門のレビューサイトです。</p>                 
+                                </div>    
+                            </div>      
+                        </div>
+                    </div>      
+                </div>              
+
+
 			<div class="container pt-4 pb-5 nagoyameshi-container">
 				<div class="row">
 					<!-- 検索フォームの列 -->
@@ -222,7 +241,8 @@
 								<div th:each="category, iterStat : ${topCategories}" class="category-item">
 									<a th:href="@{/restaurants(category=${category.name})}">
 										<div class="image-container">
-											<img th:src="@{'/categorystorage/' + ${category.imageName}}" alt="カテゴリ画像" />
+											<img th:src="@{'/storage/category/' + ${category.imageName}}"
+												alt="カテゴリ画像" />
 											<div class="category-name-overlay">
 												<h3 th:text="${category.name}">カテゴリ名</h3>
 											</div>
@@ -241,12 +261,7 @@
 									</ul>
 								</div>
 							</div>
-							<!--								<div th:each="category, iterStat : ${otherCategories}" class="category-item-no-image">-->
-							<!--									<a th:href="@{/restaurants(category=${category.name})}"-->
-							<!--										th:text="${category.name}">カテゴリ名</a>-->
-							<!--								</div>-->
-							<!--							</div>-->
-
+					
 
 
 							<!-- おすすめのレストラン -->
@@ -258,7 +273,8 @@
 										<div class="card h-100">
 											<div class="image-container">
 												<img th:if="${newrestaurant.getImage()}"
-													th:src="@{/storage/__${newrestaurant.getImage()}__}" alt="レストラン画像">
+													th:src="@{/storage/restaurant/__${newrestaurant.getImage()}__}"
+													alt="レストラン画像">
 											</div>
 											<div class="card-body">
 												<h3 class="card-title" th:text="${newrestaurant.getName()}"></h3>
@@ -277,26 +293,27 @@
 							</div>
 							<h2 class="text-center mb-3">人気のレストラン</h2>
 							<div class="row row-cols-lg-5 row-cols-2 g-3 mb-5">
-								<div class="col" th:each="topRatedRestaurant : ${topRatedRestaurants}">
-									<a th:href="@{/restaurants/__${topRatedRestaurant.getId()}__}"
+								<div th:each="highlyRatedRestaurant : ${highlyRatedRestaurants}" class="col">
+									<a th:href="@{/restaurants/__${highlyRatedRestaurant.getId()}__}"
 										class="link-dark nagoyameshi-card-link">
 										<div class="card h-100">
 											<div class="image-container">
-												<img th:if="${topRatedRestaurant.getImage()}"
-													th:src="@{/storage/__${topRatedRestaurant.getImage()}__}"
+												<img th:if="${highlyRatedRestaurant.getImage()}"
+													th:src="@{/storage/restaurant/__${highlyRatedRestaurant.getImage()}__}"
 													alt="レストラン画像">
-												<img th:unless="${topRatedRestaurant.getImage()}"
+												<img th:unless="${highlyRatedRestaurant.getImage()}"
 													th:src="@{/images/noImage.png}" alt="NO IMAGE" />
 											</div>
 											<div class="card-body">
-												<h3 class="card-title" th:text="${topRatedRestaurant.getName()}"></h3>
+												<h3 class="card-title" th:text="${highlyRatedRestaurant.getName()}">
+												</h3>
 												<p class="card-text mb-1">
 													<small class="text-muted"
-														th:text="${topRatedRestaurant.getAddress()}"></small>
+														th:text="${highlyRatedRestaurant.getAddress()}"></small>
 												</p>
 												<p class="card-text">
 													<span
-														th:text="${#numbers.formatInteger(topRatedRestaurant.getLowestPrice(), 1, 'COMMA')} + '円～' + ${#numbers.formatInteger(topRatedRestaurant.getHighestPrice(), 1, 'COMMA')} + '円'"></span>
+														th:text="${#numbers.formatInteger(highlyRatedRestaurant.getLowestPrice(), 1, 'COMMA')} + '円～' + ${#numbers.formatInteger(highlyRatedRestaurant.getHighestPrice(), 1, 'COMMA')} + '円'"></span>
 												</p>
 											</div>
 										</div>
@@ -311,6 +328,8 @@
 		<!-- フッター  -->
 		<div th:replace="~{fragment :: footer}"></div>
 	</div>
+	 <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+        <script th:src="@{/js/carousel.js}"></script>        
 
 	<div th:replace="~{fragment :: scripts}"></div>
 </body>

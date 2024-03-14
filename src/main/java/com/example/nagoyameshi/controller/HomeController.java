@@ -1,74 +1,69 @@
 package com.example.nagoyameshi.controller;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.web.PageableDefault;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.nagoyameshi.dto.RestaurantRatingDTO;
+import com.example.nagoyameshi.entity.Category;
 import com.example.nagoyameshi.entity.Restaurant;
+import com.example.nagoyameshi.repository.CategoryRepository;
 import com.example.nagoyameshi.repository.RestaurantRepository;
+import com.example.nagoyameshi.service.CategoryService;
 import com.example.nagoyameshi.service.RestaurantService;
 
 @Controller
-@RequestMapping("/restaurants")
-
 public class HomeController {
-	  private final RestaurantRepository restaurantRepository;
-	  private final RestaurantService restaurantService;
 
-	    public HomeController(RestaurantRepository restaurantRepository, RestaurantService restaurantService) {
-	        this.restaurantRepository = restaurantRepository;
-			this.restaurantService = restaurantService;
-	    }
+	private final RestaurantRepository restaurantRepository;
 
-	    @GetMapping
-	    public String index(@RequestParam(name = "keyword", required = false) String keyword,
-	                        @RequestParam(name = "area", required = false) String area,
-	                        @RequestParam(name = "price", required = false) Integer price,
-	                        @RequestParam(name = "category", required = false) String category, // カテゴリパラメータを追加
-	                        @PageableDefault(page = 0, size = 10, sort = "id") Pageable pageable,
-	                        Model model) {
-	        Page<Restaurant> restaurantPage;
+	private final CategoryRepository categoryRepository;
+	private final RestaurantService restaurantService;
 
-	        if (keyword != null && !keyword.isEmpty()) {
-	            restaurantPage = restaurantRepository.findByNameLikeOrAddressLike("%" + keyword + "%", "%" + keyword + "%", pageable);
-	        } else if (area != null && !area.isEmpty()) {
-	            restaurantPage = restaurantRepository.findByAddressLike("%" + area + "%", pageable);
-	        } else if (price != null) {
-	            restaurantPage = restaurantRepository.findByLowestPriceLessThanEqual(price, pageable);
-	        } else if (category != null && !category.isEmpty()) { // カテゴリによる検索条件を追加
-	            restaurantPage = restaurantRepository.findByCategoryNameLike("%" + category + "%", pageable);
-	        } else {
-	            restaurantPage = restaurantRepository.findAll(pageable);
-	        }
+	public HomeController(RestaurantRepository restaurantRepository, CategoryService categoryService,
+			CategoryRepository categoryRepository, RestaurantService restaurantService) {
+		this.restaurantRepository = restaurantRepository;
 
-	        model.addAttribute("restaurantPage", restaurantPage);
-	        model.addAttribute("keyword", keyword);
-	        model.addAttribute("area", area);
-	        model.addAttribute("price", price);
-	        model.addAttribute("category", category); // モデルにカテゴリを追加
+		this.categoryRepository = categoryRepository;
+		this.restaurantService = restaurantService;
+	}
 
-	        return "restaurants/index"; // Viewのパス
-	    }
-	    
-	    // 新着順のリストを表示するためのエンドポイント
-	    @GetMapping("/newest")
-	    public String listNewest(@PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Direction.DESC) Pageable pageable, Model model) {
-	        Page<Restaurant> restaurantPage = restaurantRepository.findAll(pageable);
-	        model.addAttribute("restaurantPage", restaurantPage);
-	        return "restaurants/index"; // 新着順のレストランを表示するテンプレートへのパス
-	    }
-	    
-	    @GetMapping("/rating")
-	    public String listBestRating(@PageableDefault(page = 0, size = 10) Pageable pageable, Model model) {
-	        Page<RestaurantRatingDTO> restaurantPage = restaurantService.getRestaurantsSortedByRatings(pageable);
-	        model.addAttribute("restaurantPage", restaurantPage);
-	        return "restaurants/index"; // 評価の高い順のレストランを表示するテンプレートへのパス
-	    }
-}	    
+	@GetMapping("/")
+	public String publicindex(Model model) {
+		List<Restaurant> restaurants = restaurantRepository.findAll(); // この行を追加
+		List<Restaurant> newRestaurants = restaurantRepository.findTop5ByOrderByCreatedAtDesc();
+		List<Category> allCategories = categoryRepository.findAll();
+		List<Category> topCategories = allCategories.stream().limit(5).collect(Collectors.toList());
+		List<Category> otherCategories = allCategories.stream().skip(5).collect(Collectors.toList());
+		List<Restaurant> sortedRestaurants = restaurantService.sortByRatingDesc(restaurants);
+		List<Restaurant> highlyRatedRestaurants = sortedRestaurants.subList(0, Math.min(sortedRestaurants.size(), 5));
+
+		model.addAttribute("highlyRatedRestaurants", highlyRatedRestaurants);
+		model.addAttribute("newRestaurants", newRestaurants);
+		model.addAttribute("topCategories", topCategories);
+		model.addAttribute("otherCategories", otherCategories);
+
+		return "index";
+	}
+
+	@GetMapping("/index")
+	public String index(Model model) {
+		List<Restaurant> restaurants = restaurantRepository.findAll(); // この行を追加
+		List<Restaurant> newRestaurants = restaurantRepository.findTop5ByOrderByCreatedAtDesc();
+		List<Category> allCategories = categoryRepository.findAll();
+		List<Category> topCategories = allCategories.stream().limit(5).collect(Collectors.toList());
+		List<Category> otherCategories = allCategories.stream().skip(5).collect(Collectors.toList());
+		List<Restaurant> sortedRestaurants = restaurantService.sortByRatingDesc(restaurants);
+		List<Restaurant> highlyRatedRestaurants = sortedRestaurants.subList(0, Math.min(sortedRestaurants.size(), 5));
+
+		model.addAttribute("topCategories", topCategories);
+		model.addAttribute("otherCategories", otherCategories);
+		model.addAttribute("newRestaurants", newRestaurants);
+		model.addAttribute("highlyRatedRestaurants", highlyRatedRestaurants);
+
+		return "index";
+	}
+
+}
