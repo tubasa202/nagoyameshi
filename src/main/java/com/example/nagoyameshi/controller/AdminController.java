@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.nagoyameshi.entity.Category;
 import com.example.nagoyameshi.entity.Restaurant;
@@ -19,6 +20,7 @@ import com.example.nagoyameshi.service.RestaurantService;
 import com.example.nagoyameshi.service.StripeService;
 
 @Controller
+@RequestMapping("/admin")
 public class AdminController {
 
 	private final RestaurantService restaurantService;
@@ -42,7 +44,9 @@ public class AdminController {
 		this.restaurantRepository = restaurantRepository;
 	}
 
-	@GetMapping("/admin/index")
+//	@GetMapping("/admin/index")
+	
+     @GetMapping
 	public String dashboard(Model model) {
 		List<Restaurant> restaurants = restaurantRepository.findAll(); // この行を追加
 		List<Restaurant> newRestaurants = restaurantService.findNewRestaurants(5); // 例えば最新の5件
