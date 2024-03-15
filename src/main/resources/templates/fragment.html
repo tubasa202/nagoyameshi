@@ -31,7 +31,7 @@
 		<nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm nagoyameshi-navbar">
 			<div class="container nagoyameshi-container">
 				<a class="navbar-brand"
-					th:href="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? '/admin/index' : ( #authorization.expression('hasRole(''ROLE_USER'')') ? '/index' : '/')}">
+					th:href="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? '/admin' : ( #authorization.expression('hasRole(''ROLE_USER'')') ? '/index' : '/')}">
 					<img class="nagoyameshi-logo me-1" th:src="@{/images/logo.png}" alt="NAGOYA Meshi">
 				</a>
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
