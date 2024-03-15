@@ -76,7 +76,7 @@ public class AdminController {
 		model.addAttribute("totalReservations", totalReservations);
 		model.addAttribute("salesForThisMonth", salesForThisMonth);
 
-		return "/admin/index";
+		return "admin/index";
 	}
 
 }

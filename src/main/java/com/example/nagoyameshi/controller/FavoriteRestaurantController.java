@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.nagoyameshi.repository.NagoyameshiuserRepository;
 import com.example.nagoyameshi.service.FavoriteService;
 import com.example.nagoyameshi.service.UserService;
 
@@ -23,13 +22,9 @@ public class FavoriteRestaurantController {
 
 	private final FavoriteService favoriteService;
 	private final UserService userService;
-	private final NagoyameshiuserRepository nagoyameshiuserRepository;
-
-	public FavoriteRestaurantController(FavoriteService favoriteService, UserService userService,
-			NagoyameshiuserRepository nagoyameshiuserRepository) {
+	public FavoriteRestaurantController(FavoriteService favoriteService, UserService userService) {
 		this.favoriteService = favoriteService;
 		this.userService = userService;
-		this.nagoyameshiuserRepository = nagoyameshiuserRepository;
 	}
 
 	@PostMapping("/add-favorite")
