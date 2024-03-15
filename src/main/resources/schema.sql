@@ -1,28 +1,23 @@
-CREATE TABLE IF NOT EXISTS restaurants(
-     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-     name VARCHAR(50) NOT NULL,
-     image VARCHAR(255),
-     description VARCHAR(255) NOT NULL,
-     lowest_price INT NOT NULL,
-     highest_price INT NOT NULL,
-     postal_code VARCHAR(50) NOT NULL,
-     address VARCHAR(255) NOT NULL,
-     phone_number VARCHAR(50) NOT NULL,
-     opening_time TIME,
-     closing_time TIME,
-     category_id INT NOT NULL, -- カテゴリIDを追加
-     seating_capacity INT NOT NULL,     
-     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-     FOREIGN KEY (category_id) REFERENCES categories(id)
-);
-
- 
 CREATE TABLE IF NOT EXISTS roles (
      id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
      name VARCHAR(50) NOT NULL
  );
  
+  CREATE TABLE IF NOT EXISTS categories (
+     id INT AUTO_INCREMENT PRIMARY KEY,
+     name VARCHAR(255) NOT NULL,
+     image_name VARCHAR(255),
+     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS regular_holidays (
+     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+     day VARCHAR(50) NOT NULL,
+     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
 CREATE TABLE IF NOT EXISTS nagoyameshiusers (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
@@ -44,6 +39,29 @@ CREATE TABLE IF NOT EXISTS nagoyameshiusers (
     FOREIGN KEY (role_id) REFERENCES roles (id)
 );
 
+CREATE TABLE IF NOT EXISTS restaurants(
+     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+     name VARCHAR(50) NOT NULL,
+     image VARCHAR(255),
+     description VARCHAR(255) NOT NULL,
+     lowest_price INT NOT NULL,
+     highest_price INT NOT NULL,
+     postal_code VARCHAR(50) NOT NULL,
+     address VARCHAR(255) NOT NULL,
+     phone_number VARCHAR(50) NOT NULL,
+     opening_time TIME,
+     closing_time TIME,
+     category_id INT NOT NULL, -- カテゴリIDを追加
+     seating_capacity INT NOT NULL,     
+     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+     FOREIGN KEY (category_id) REFERENCES categories(id)
+);
+
+ 
+
+
+
  CREATE TABLE IF NOT EXISTS verification_tokens (
      id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
      nagoyameshiuser_id INT NOT NULL UNIQUE,
@@ -53,13 +71,7 @@ CREATE TABLE IF NOT EXISTS nagoyameshiusers (
      FOREIGN KEY (nagoyameshiuser_id) REFERENCES nagoyameshiusers (id) 
  );
  
-  CREATE TABLE IF NOT EXISTS categories (
-     id INT AUTO_INCREMENT PRIMARY KEY,
-     name VARCHAR(255) NOT NULL,
-     image_name VARCHAR(255),
-     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
+ 
 
 CREATE TABLE IF NOT EXISTS companies (
     id SERIAL PRIMARY KEY,
@@ -82,12 +94,7 @@ CREATE TABLE IF NOT EXISTS terms (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS regular_holidays (
-     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-     day VARCHAR(50) NOT NULL,
-     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
+
 
 -- regular_holiday_restaurant テーブルのスキーマ
 CREATE TABLE IF NOT EXISTS regular_holiday_restaurant (
