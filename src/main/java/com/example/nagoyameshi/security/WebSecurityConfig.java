@@ -30,7 +30,7 @@ public class WebSecurityConfig {
 	                    .loginPage("/login")
 	                    .loginProcessingUrl("/login")
 //	                    .successHandler(new CustomAuthenticationSuccessHandler())
-	                    .defaultSuccessUrl("/?loggedIn")  
+	                    .defaultSuccessUrl("/",true)  
 	                    .failureUrl("/login?error")
 	                    .permitAll())
 	            .logout((logout) -> logout
