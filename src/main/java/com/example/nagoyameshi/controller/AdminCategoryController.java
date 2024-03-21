@@ -68,7 +68,7 @@ public class AdminCategoryController {
 
 	@PostMapping("/create")
 	public String create(@ModelAttribute @Validated CategoryRegisterForm categoryRegisterForm,
-			BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+			BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
 		if (bindingResult.hasErrors()) {
 			return "admin/categories/register";
 		}
@@ -95,7 +95,7 @@ public class AdminCategoryController {
 	public String update(@ModelAttribute @Validated CategoryEditForm categoryEditForm, BindingResult bindingResult,
 			RedirectAttributes redirectAttributes) {
 		if (bindingResult.hasErrors()) {
-			return "admin/category/edit";
+			return "admin/categories/edit";
 		}
 
 		categoryService.update(categoryEditForm);

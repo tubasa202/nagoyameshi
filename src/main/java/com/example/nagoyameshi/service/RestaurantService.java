@@ -161,11 +161,15 @@ public class RestaurantService {
 		}
 
 		if (!imageFile.isEmpty()) {
-			String image = imageFile.getOriginalFilename();
-			String hashedImage = generateNewFileName(image);
-			java.nio.file.Path filePath = Paths.get("src/main/resources/static/storage/restaurant" + hashedImage);
-			copyImageFile(imageFile, filePath);
-			restaurant.setImage(hashedImage);
+//			String image = imageFile.getOriginalFilename();
+//			String hashedImage = generateNewFileName(image);
+//			java.nio.file.Path filePath = Paths.get("src/main/resources/static/storage/restaurant/" + hashedImage);
+//			copyImageFile(imageFile, filePath);
+//			restaurant.setImage(hashedImage);
+			 String originalFileName = imageFile.getOriginalFilename(); // オリジナルのファイル名を取得
+			    Path filePath = Paths.get("src/main/resources/static/storage/restaurant/" + originalFileName);
+			    copyImageFile(imageFile, filePath);
+			    restaurant.setImage(originalFileName); // DBにはオリジナルのファイル名を保存
 		}
 
 		restaurant.setName(restaurantRegisterForm.getName());
@@ -196,11 +200,16 @@ public class RestaurantService {
 		}
 
 		if (!imageFile.isEmpty()) {
-			String image = imageFile.getOriginalFilename();
-			String hashedImage = generateNewFileName(image);
-			Path filePath = Paths.get("src/main/resources/static/storage/" + hashedImage);
-			copyImageFile(imageFile, filePath);
-			restaurant.setImage(hashedImage);
+//			String image = imageFile.getOriginalFilename();
+//			String hashedImage = generateNewFileName(image);
+//			Path filePath = Paths.get("src/main/resources/static/storage/restaurant/" + hashedImage);
+//			copyImageFile(imageFile, filePath);
+//			restaurant.setImage(hashedImage);
+			
+			 String originalFileName = imageFile.getOriginalFilename(); // オリジナルのファイル名を取得
+			    Path filePath = Paths.get("src/main/resources/static/storage/restaurant/" + originalFileName);
+			    copyImageFile(imageFile, filePath);
+			    restaurant.setImage(originalFileName); // DBにはオリジナルのファイル名を保存
 		}
 		restaurant.setName(restaurantEditForm.getName());
 		restaurant.setDescription(restaurantEditForm.getDescription());

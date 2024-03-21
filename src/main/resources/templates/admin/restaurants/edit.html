@@ -55,7 +55,7 @@
 							</div>
 
 							<!-- 選択された画像の表示場所 -->
-							<div th:if="${image}" class="row" id="imagePreview"><img th:src="@{/storage/__${image}__}"
+							<div th:if="${image}" class="row" id="imagePreview"><img th:src="@{/storage/restaurant/__${image}__}"
 									class=mb-3></div>
 							<div th:unless="${image}" class="row" id="imagePreview"></div>
 

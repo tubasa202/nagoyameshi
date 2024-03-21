@@ -35,11 +35,16 @@ public class CategoryService {
 		MultipartFile imageFile = categoryRegisterForm.getImageFile();
 
 		if (!imageFile.isEmpty()) {
-			String imageName = imageFile.getOriginalFilename();
-			String hashedImageName = generateNewFileName(imageName);
-			Path filePath = Paths.get("src/main/resources/static/categorystorage/" + hashedImageName);
-			copyImageFile(imageFile, filePath);
-			category.setImageName(hashedImageName);
+//			String imageName = imageFile.getOriginalFilename();
+//			String hashedImageName = generateNewFileName(imageName);
+//			Path filePath = Paths.get("src/main/resources/static/storage/category/" + hashedImageName);
+//			copyImageFile(imageFile, filePath);
+//			category.setImageName(hashedImageName);
+			
+			 String originalFileName = imageFile.getOriginalFilename(); // オリジナルのファイル名を取得
+			    Path filePath = Paths.get("src/main/resources/static/storage/category/" + originalFileName);
+			    copyImageFile(imageFile, filePath);
+			    category.setImageName(originalFileName); // DBにはオリジナルのファイル名を保存
 		}
 
 		category.setName(categoryRegisterForm.getName());
@@ -53,11 +58,15 @@ public class CategoryService {
 		MultipartFile imageFile = categoryEditForm.getImageFile();
 
 		if (!imageFile.isEmpty()) {
-			String imageName = imageFile.getOriginalFilename();
-			String hashedImageName = generateNewFileName(imageName);
-			Path filePath = Paths.get("src/main/resources/static/storage/category" + hashedImageName);
-			copyImageFile(imageFile, filePath);
-			category.setImageName(hashedImageName);
+//			String imageName = imageFile.getOriginalFilename();
+//			String hashedImageName = generateNewFileName(imageName);
+//			Path filePath = Paths.get("src/main/resources/static/storage/category/" + hashedImageName);
+//			copyImageFile(imageFile, filePath);
+//			category.setImageName(hashedImageName);
+			 String originalFileName = imageFile.getOriginalFilename(); // オリジナルのファイル名を取得
+			    Path filePath = Paths.get("src/main/resources/static/storage/category/" + originalFileName);
+			    copyImageFile(imageFile, filePath);
+			    category.setImageName(originalFileName); // DBにはオリジナルのファイル名を保存
 		}
 
 		category.setName(categoryEditForm.getName());
