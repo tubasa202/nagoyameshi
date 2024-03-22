@@ -92,20 +92,19 @@ public class RestaurantService {
 
 	}
 
-	// RestaurantService.java
-	public Page<Restaurant> searchRestaurants(String keyword, String area, String category, Pageable pageable) {
-		if (keyword != null && !keyword.isEmpty()) {
-			return restaurantRepository.findByNameLike("%" + keyword + "%", pageable);
-		} else if (area != null && !area.isEmpty()) {
-			return restaurantRepository.findByAddressLike("%" + area + "%", pageable);
-		} else if (category != null && !category.isEmpty()) {
-			// カテゴリ名での検索を正確に行う
-			return restaurantRepository.findByCategoryNameLike("%" + category + "%", pageable);
-		} else {
-			return restaurantRepository.findAll(pageable);
-		}
-	}
 
+	public Page<Restaurant> searchRestaurants(String keyword, String area, String category, Pageable pageable) {
+	if (keyword != null && !keyword.isEmpty()) {
+		return restaurantRepository.findByNameLike("%" + keyword + "%", pageable);
+		} else if (area != null && !area.isEmpty()) {
+		return restaurantRepository.findByAddressLike("%" + area + "%", pageable);
+	} else if (category != null && !category.isEmpty()) {
+			// カテゴリ名での検索を正確に行う
+		return restaurantRepository.findByCategoryNameLike("%" + category + "%", pageable);		} else {
+		return restaurantRepository.findAll(pageable);
+	}
+}
+	
 	// 最近追加されたレストランを取得するメソッド
 	public List<Restaurant> findNewRestaurants(int limit) {
 		return restaurantRepository.findTop5ByOrderByCreatedAtDesc();

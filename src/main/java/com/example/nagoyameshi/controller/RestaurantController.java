@@ -61,7 +61,7 @@ public class RestaurantController {
 
 		return "restaurants/index"; // Viewのパス
 	}
-
+	
 	// 新着順のリストを表示するためのエンドポイント
 	@GetMapping("/newest")
 	public String listNewest(

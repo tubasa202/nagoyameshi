@@ -48,22 +48,22 @@ public class HomeController {
 		return "index";
 	}
 
-	@GetMapping("/index")
-	public String index(Model model) {
-		List<Restaurant> restaurants = restaurantRepository.findAll(); // この行を追加
-		List<Restaurant> newRestaurants = restaurantRepository.findTop5ByOrderByCreatedAtDesc();
-		List<Category> allCategories = categoryRepository.findAll();
-		List<Category> topCategories = allCategories.stream().limit(5).collect(Collectors.toList());
-		List<Category> otherCategories = allCategories.stream().skip(5).collect(Collectors.toList());
-		List<Restaurant> sortedRestaurants = restaurantService.sortByRatingDesc(restaurants);
-		List<Restaurant> highlyRatedRestaurants = sortedRestaurants.subList(0, Math.min(sortedRestaurants.size(), 5));
-
-		model.addAttribute("topCategories", topCategories);
-		model.addAttribute("otherCategories", otherCategories);
-		model.addAttribute("newRestaurants", newRestaurants);
-		model.addAttribute("highlyRatedRestaurants", highlyRatedRestaurants);
-
-		return "index";
-	}
+//	@GetMapping("/index")
+//	public String index(Model model) {
+//		List<Restaurant> restaurants = restaurantRepository.findAll(); // この行を追加
+//		List<Restaurant> newRestaurants = restaurantRepository.findTop5ByOrderByCreatedAtDesc();
+//		List<Category> allCategories = categoryRepository.findAll();
+//		List<Category> topCategories = allCategories.stream().limit(5).collect(Collectors.toList());
+//		List<Category> otherCategories = allCategories.stream().skip(5).collect(Collectors.toList());
+//		List<Restaurant> sortedRestaurants = restaurantService.sortByRatingDesc(restaurants);
+//		List<Restaurant> highlyRatedRestaurants = sortedRestaurants.subList(0, Math.min(sortedRestaurants.size(), 5));
+//
+//		model.addAttribute("topCategories", topCategories);
+//		model.addAttribute("otherCategories", otherCategories);
+//		model.addAttribute("newRestaurants", newRestaurants);
+//		model.addAttribute("highlyRatedRestaurants", highlyRatedRestaurants);
+//
+//		return "index";
+//	}
 
 }
