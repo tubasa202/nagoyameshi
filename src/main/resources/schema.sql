@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS restaurants(
      phone_number VARCHAR(50) NOT NULL,
      opening_time TIME,
      closing_time TIME,
-     category_id INT NOT NULL, -- カテゴリIDを追加
+     category_id INT NULL, -- カテゴリIDを追加
      seating_capacity INT NOT NULL,     
      created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
      updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
