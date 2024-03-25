@@ -45,7 +45,7 @@ public class HomeController {
 		model.addAttribute("topCategories", topCategories);
 		model.addAttribute("otherCategories", otherCategories);
 
-		return "/index";
+		return "index";
 	}
 
 //	@GetMapping("/index")
